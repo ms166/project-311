@@ -25,5 +25,5 @@ Pretty much nothing has been done yet. The app only allows inserting values into
   * Open the `project-311/config.py file` and change the parameters appropriately.
   * Start a MySQL server
 * Run the program:
- * type: `flask run`
- * go to `http://127.0.0.1:5000/`
+  * type: `flask run`
+  * go to `http://127.0.0.1:5000/`
