@@ -1,0 +1,19 @@
+{% extends 'admin_base.html' %}
+
+{% block content_1 %}
+	<h1>Enter new product info:</h1>
+	<p><pre> Name  	    	   Price  	    Category        Weight<br></pre>
+	</p>
+	<form action = "{{ url_for('admin_products_view_func') }}" target="_self" method="post">
+		<input type="text" name="name"> <input type="text" name="price"> <input type="text" name="category"> <input type="text" name="weight"> <br>
+		<input type="submit" value="enter">
+	</form>
+	<h1>List of products <br> </h1>
+	{% if items %}
+		{% for item in items %}
+			<p>{{ item }}<br></p>
+		{% endfor %}
+	{% else %}
+		<p>Current Inventory is empty.<br></p>
+	{% endif %}
+{% endblock %}
