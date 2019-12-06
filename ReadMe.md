@@ -8,7 +8,18 @@
   https://www.w3schools.com/howto/tryit.asp?filename=tryhow_css_sidenav_fixed
   and 
   https://www.w3schools.com/html/tryit.asp?filename=tryhtml_table_intro
+
+# File/folder structure:
+  * `app/templates` contains all HTML files
+  * `app/static/css` contains all CSS files
+  * `app/models.py` contains DB functions
+  * `app/routes.py` contains view functions
+  * `config.py` contains configuration variables
+  * `project311.py` is the start point of the whole application
+
+# Random Notes
   * Note about CSS: after making changes to CSS files, for the changes to be shown, cookies and cache must be cleared.
+  * Setting to debug mode allows all changes to be updated immediately rather than having to rerun `flask run`
 
 # Installation
 * Install python 3 on your system
