@@ -38,3 +38,10 @@
 * Run the program:
   * type: `flask run`
   * go to `http://127.0.0.1:5000/`
+* Debug mode:
+  * Set debug mode:
+    * Unix: `export FLASK_ENV=development`
+    * Windows : `set FLASK_ENV=development`
+  * Unset debug mode:
+    * Unix: `export FLASK_ENV=production`
+    * Windows : `set FLASK_ENV=production`

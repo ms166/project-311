@@ -12,7 +12,7 @@ class Food:
 		cursor.execute("""
 			CREATE TABLE IF NOT EXISTS FOOD(
 				item_id int NOT NULL AUTO_INCREMENT PRIMARY KEY,
-				name varchar(20) NOT NULL,
+				name varchar(30) NOT NULL,
 				quantity int NOT NULL,
 				price int NOT NULL,
 				weight int NOT NULL,
@@ -77,7 +77,7 @@ class Electronics:
 		cursor.execute("""
 			CREATE TABLE IF NOT EXISTS ELECTRONICS(
 				item_id int NOT NULL AUTO_INCREMENT PRIMARY KEY,
-				name varchar(20) NOT NULL,
+				name varchar(30) NOT NULL,
 				quantity int NOT NULL,
 				price int NOT NULL,
 				manufacturer varchar(20) NOT NULL,
@@ -141,7 +141,7 @@ class Clothes:
 		cursor.execute("""
 			CREATE TABLE IF NOT EXISTS CLOTHES(
 				item_id int NOT NULL AUTO_INCREMENT PRIMARY KEY,
-				name varchar(20) NOT NULL,
+				name varchar(30) NOT NULL,
 				quantity int NOT NULL,
 				price int NOT NULL,
 				material varchar(20) NOT NULL,
@@ -163,6 +163,40 @@ class Clothes:
 			names.append(i[0])
 		return names
 
+	def insertDefault():
+		conn = mysql_instance.connect()
+		cursor = conn.cursor()
+		cursor.execute("SELECT name FROM CLOTHES WHERE name='Hudson Jeans';")
+		res = cursor.fetchall()
+
+		if(len(res) != 0):
+			return
+
+		cursor.execute("""
+			INSERT INTO CLOTHES(name, quantity, price, material, size)
+			VALUES 
+				('Hudson Jeans', 10, 191, 'Hudson', 30),
+				('Levis Bootcut Jeans', 10, 41, 'Levis', 32),
+				('Sneaker', 20, 191, 'New Balance', 25),
+				('Slim-fit Shirt', 11, 191, 'J.Crew', 28),
+				('Long Sleeve Shirt', 12, 191, 'Volcom', 31),
+				('Zipped Jacket', 18, 191, 'DXL', 31),
+				('Levis', 29, 191, 'Hudson', 30),
+				('Crewneck Sweaters', 32, 200, 'Assert', 30),
+				('Sweatpants', 12, 191, 'Yeokou', 21),
+				('Running Shoe', 93, 300, 'addidas', 22);
+			""")
+		conn.commit()
+
+	def getAll():
+		conn = mysql_instance.connect()
+		cursor = conn.cursor()
+		cursor.execute("""
+			SELECT * FROM CLOTHES; 
+			""")
+		rows = cursor.fetchall()
+		return rows
+
 class Videogames:
 	def create():
 		conn = mysql_instance.connect()
@@ -171,12 +205,12 @@ class Videogames:
 		cursor.execute("""
 			CREATE TABLE IF NOT EXISTS VIDEOGAMES(
 				item_id int NOT NULL AUTO_INCREMENT PRIMARY KEY,
-				name varchar(20) NOT NULL,
+				name varchar(30) NOT NULL,
 				quantity int NOT NULL,
 				price int NOT NULL,
 				company varchar(20) NOT NULL,
 				release_date DATE NOT NULL,
-				OS varchar(20) NOT NULL
+				platform varchar(30) NOT NULL
 			);
 			""")
 		cursor.execute("""
@@ -192,3 +226,36 @@ class Videogames:
 		for i in res:
 			names.append(i[0])
 		return names
+	def insertDefault():
+		conn = mysql_instance.connect()
+		cursor = conn.cursor()
+		cursor.execute("SELECT name FROM VIDEOGAMES WHERE name='Days Gone';")
+		res = cursor.fetchall()
+
+		if(len(res) != 0):
+			return
+
+		cursor.execute("""
+			INSERT INTO VIDEOGAMES(name, quantity, price, company, release_date, platform)
+			VALUES 
+				('Days Gone', 10, 30, 'SIE Bend Studio', '2019-04-26', 'PS4'),
+				('Borderlands 3', 10, 30, '2k Games', '2019-09-13', 'PS4, Xbox, PC'),
+				('Overwatch', 10, 30, 'Blizzard', '2016-04-26', 'PS4, Xbox, PC'),
+				('Battlefield V', 10, 30, 'Electronic Arts', '2018-11-20', 'PS4, Xbox, PC'),
+				('Sniper Ghost Warrior', 10, 30, 'CI games', '2010-06-24', 'PS4, Xbox, PC'),
+				('Termintor Resistance', 10, 30, 'Teyon', '2019-12-10', 'PS4, Xbox, PC'),
+				('Wolfenstein Youngblood', 10, 30, 'Bethesda', '2019-07-01', 'PS4, Xbox, PC, Nintendo'),
+				('Jumanji', 10, 30, 'Funsolve LTD', '2019-11-08', 'PS4, Xbox, PC, Nintendo'),
+				('Rage 2', 10, 30, 'Avalance Studios', '2019-05-14', 'PS4, Xbox, PC'),
+				('Death Stranding', 10, 30, 'Kojima Productions', '2019-11-09', 'PS4, PC');
+				""")
+		conn.commit()
+
+	def getAll():
+		conn = mysql_instance.connect()
+		cursor = conn.cursor()
+		cursor.execute("""
+			SELECT * FROM VIDEOGAMES;
+			""")
+		rows = cursor.fetchall()
+		return rows

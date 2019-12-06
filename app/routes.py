@@ -28,7 +28,16 @@ def admin_products_view_func():
 	Electronics.insertDefault()
 	electronics_rows = Electronics.getAll()
 	electronics_columns = Electronics.getColumnNames()
-	return render_template('admin/admin_products.html', title='List of Products', food_rows=food_rows, food_columns=food_columns, electronics_rows=electronics_rows, electronics_columns=electronics_columns)
+
+	Clothes.insertDefault()
+	clothes_rows = Clothes.getAll()
+	clothes_columns = Clothes.getColumnNames()
+
+
+	Videogames.insertDefault()
+	videogames_rows = Videogames.getAll()
+	videogames_columns = Videogames.getColumnNames()
+	return render_template('admin/admin_products.html', title='List of Products', food_rows=food_rows, food_columns=food_columns, electronics_rows=electronics_rows, electronics_columns=electronics_columns, clothes_rows=clothes_rows, clothes_columns=clothes_columns, videogames_rows=videogames_rows, videogames_columns=videogames_columns)
 
 
 @flask_app_instance.route('/low_products')

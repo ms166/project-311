@@ -39,4 +39,38 @@
 			</tr><br>
 		{% endfor %}
 	</table>
+	<table style="width:100%">
+		<caption>Clothes</caption>
+		{% for column in clothes_columns %}
+			<th>
+				{{ column }}
+			</th>
+		{% endfor %}
+		{% for row in clothes_rows %}
+			<tr>
+				{% for item in row %}
+				<td>
+					{{ item }}	
+				</td>
+				{% endfor %}
+			</tr><br>
+		{% endfor %}
+	</table>
+	<table style="width:100%">
+		<caption>Video Games</caption>
+		{% for column in videogames_columns %}
+			<th>
+				{{ column }}
+			</th>
+		{% endfor %}
+		{% for row in videogames_rows %}
+			<tr>
+				{% for item in row %}
+				<td>
+					{{ item }}	
+				</td>
+				{% endfor %}
+			</tr><br>
+		{% endfor %}
+	</table>
 {% endblock %}
