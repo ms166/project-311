@@ -1,5 +1,15 @@
 # Current Progress
-Pretty much nothing has been done yet. The app only allows inserting values into a table which is displayed back on the page.
+* 28/11/2019:
+  * Pretty much nothing has been done yet. The app only allows inserting values into a table which is displayed back on the page.
+* 06/12/2019: 
+  * Made separtions for admin pages and user pages
+  * Added products table with default values.
+  * Added CSS files for sidebar and products table. Taken from
+  https://www.w3schools.com/howto/tryit.asp?filename=tryhow_css_sidenav_fixed
+  and 
+  https://www.w3schools.com/html/tryit.asp?filename=tryhtml_table_intro
+  * Note about CSS: after making changes to CSS files, for the changes to be shown, cookies and cache must be cleared.
+
 # Installation
 * Install python 3 on your system
 * Create a virtual environment in any directory:
@@ -24,6 +34,8 @@ Pretty much nothing has been done yet. The app only allows inserting values into
   * Install mysql on your system
   * Open the `project-311/config.py` file and change the parameters appropriately.
   * Start a MySQL server
+  * Create a database named `groceryDB`. If you name it something else, then change the `MYSQL_DATABASE_DB` parameter in the `project-311/config.py` file.
+  * Change paramters in `the project-311/config.py` file if you need to change configuration variables such as MySQL ports, passwords, db names etc.
 * Run the program:
   * type: `flask run`
   * go to `http://127.0.0.1:5000/`

@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+		
+		<link rel="stylesheet" href="{{ url_for('static', filename='css/admin_base.css') }}" /> 
+
+		{% if title %}
+			<title>{{ title }}</title>
+		{% else %}
+			<title>YOU NEED TO PASS A TITLE</title>
+		{% endif %}
+
+		{% block head_1 %}{% endblock %}
+	</head>
+	<body>
+		<div class="main">
+			<div>
+				Grocery Store Inventory System: 
+				<a href = "{{ url_for('homepage_view_func') }}">HomePage</a>
+				<hr>
+			</div>
+
+			<div class="sidenav">
+			  <a href="{{ url_for('admin_products_view_func') }}">Current Inventory</a>
+			  <a href="{{ url_for('users_info_view_func') }}">Users Information</a>
+			  <a href="{{ url_for('sales_analysis_view_func') }}">Sales Analysis</a>
+			  <a href="{{ url_for('low_products_view_func') }}">Products Low on Quantity</a>
+			  <a href="{{ url_for('scan_view_func') }}">Scan Mode</a>
+			</div>
+
+			{% block content_1 %}{% endblock %}
+		</div>
+	</body>
+</html>
