@@ -35,7 +35,7 @@
   * Open the `project-311/config.py` file and change the parameters appropriately.
   * Start a MySQL server
   * Create a database named `groceryDB`. If you name it something else, then change the `MYSQL_DATABASE_DB` parameter in the `project-311/config.py` file.
-  * Change paramters in `the project-311/config.py` file if you need to change configuration variables such as MySQL ports, passwords, db names etc.
+  * Change paramters in the `project-311/config.py` file if you need to change configuration variables such as MySQL ports, passwords, db names etc.
 * Run the program:
   * type: `flask run`
   * go to `http://127.0.0.1:5000/`
