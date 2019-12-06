@@ -62,12 +62,32 @@ def users_info_view_func():
 # User view functions
 # ====================================
 
-@flask_app_instance.route('/user_base')	
-def user_base_view_func():
-	return render_template('users/user_base.html', title='User Base Page')
+@flask_app_instance.route('/all_products')
+def all_products_view_func():
+	return render_template('users/all_products.html', title='All Products')
 
-@flask_app_instance.route('/user_login', methods=['GET', 'POST'])
-def user_login_page_view_func():
+@flask_app_instance.route('/clothes')
+def clothes_view_func():
+	return render_template('users/clothes.html', title='Clothes')	
+
+@flask_app_instance.route('/electronics')
+def electronics_view_func():
+	return render_template('users/electronics.html', title='Electronics')
+
+@flask_app_instance.route('/food')
+def food_view_func():
+	return render_template('users/food.html', title='Food')
+
+@flask_app_instance.route('/search')
+def search_view_func():
+	return render_template('users/search.html', title='Search Products')
+
+@flask_app_instance.route('/user_register')
+def user_register_view_func():
+	return render_template('users/user_register.html', title='User Register')
+
+@flask_app_instance.route('/user_sign_in', methods=['GET', 'POST'])
+def user_sign_in_view_func():
 	conn = mysql_instance.connect()
 	cursor = conn.cursor()
 	cursor.execute("""
@@ -87,4 +107,13 @@ def user_login_page_view_func():
 	cursor.execute("SELECT * FROM USERS")
 	res = cursor.fetchall()
 	conn.commit()
-	return render_template('users/user_login_page.html', title='User Login', res=res)
+	return render_template('users/user_sign_in.html', title='User Login', res=res)
+
+
+@flask_app_instance.route('/user_sign_out')
+def user_sign_out_view_func():
+	return render_template('users/user_sign_out.html', title='User Sign Out')
+	
+@flask_app_instance.route('/videogames')
+def videogames_view_func():
+	return render_template('users/videogames.html', title='Videogames')
