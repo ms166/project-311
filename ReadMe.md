@@ -3,7 +3,7 @@
   * Pretty much nothing has been done yet. The app only allows inserting values into a table which is displayed back on the page.
 * 06/12/2019: 
   * Made separtions for admin pages and user pages
-  * Added products table with default values.
+  * Added FOOD, ElECTRONICS, CLOTHES, VIDEOGAMES tables with default values.
   * Added CSS files for sidebar and products table. Taken from
   https://www.w3schools.com/howto/tryit.asp?filename=tryhow_css_sidenav_fixed
   and 
@@ -20,6 +20,14 @@
 # Random Notes
   * Note about CSS: after making changes to CSS files, for the changes to be shown, cookies and cache must be cleared.
   * Setting to debug mode allows all changes to be updated immediately rather than having to rerun `flask run`
+  * Debug mode:
+    * Set debug mode:
+      * Unix: `export FLASK_ENV=development`
+      * Windows : `set FLASK_ENV=development`
+    * Unset debug mode:
+      * Unix: `export FLASK_ENV=production`
+      * Windows : `set FLASK_ENV=production`
+
 
 # Installation
 * Install python 3 on your system
@@ -44,15 +52,8 @@
 * Set up a MySQL server:
   * Install mysql on your system
   * Start a MySQL server
-  * Create a database named `groceryDB`. If you name it something else, then change the `MYSQL_DATABASE_DB` parameter in the `project-311/config.py` file.
-  * Change paramters in the `project-311/config.py` file if you need to change configuration variables such as MySQL ports, passwords, DB names etc.
+  * Create a database named `groceryDB`. If you want to name it something else, then change the `MYSQL_DATABASE_DB` parameter in the `project-311/config.py` file.
+  * Change parameters in the `project-311/config.py` file if you need to change configuration variables such as MySQL ports, passwords, DB names etc.
 * Run the program:
   * type: `flask run`
   * go to `http://127.0.0.1:5000/`
-* Debug mode:
-  * Set debug mode:
-    * Unix: `export FLASK_ENV=development`
-    * Windows : `set FLASK_ENV=development`
-  * Unset debug mode:
-    * Unix: `export FLASK_ENV=production`
-    * Windows : `set FLASK_ENV=production`
