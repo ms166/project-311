@@ -1,8 +1,9 @@
 from flask import render_template, flash, redirect, url_for, request
 from app import flask_app_instance
 from flaskext.mysql import MySQL
-from app.models import Food, Electronics, Clothes, Videogames
-
+from app.models import Food, Electronics, Clothes, Videogames, User
+from app.forms import LoginForm
+from flask_login import current_user, login_user, logout_user
 
 mysql_instance = MySQL(flask_app_instance)
 
@@ -10,6 +11,16 @@ mysql_instance = MySQL(flask_app_instance)
 @flask_app_instance.route('/homepage')
 def homepage_view_func():
 	return render_template('homepage.html', title='Home Page')
+
+
+
+# ====================================
+# Miscellaneous functions
+# ====================================
+
+
+
+
 
 # ====================================
 # Admin view functions
@@ -88,31 +99,31 @@ def user_register_view_func():
 
 @flask_app_instance.route('/user_sign_in', methods=['GET', 'POST'])
 def user_sign_in_view_func():
-	conn = mysql_instance.connect()
-	cursor = conn.cursor()
-	cursor.execute("""
-		CREATE TABLE IF NOT EXISTS USERS(
-			username varchar(30) not null primary key,
-			password varchar(30) not null
-		);
-		""")
-	username = request.values.get('username')
-	password = request.values.get('password')
-	if(username and password):
-		cursor.execute(f"""
-			INSERT INTO USERS(username, password)
-			VALUES('{username}', '{password}')
-			""")
+	User.create()
+	User.insertDummyUser()
 
-	cursor.execute("SELECT * FROM USERS")
-	res = cursor.fetchall()
-	conn.commit()
-	return render_template('users/user_sign_in.html', title='User Login', res=res)
+	if(current_user.is_authenticated):
+		return redirect(url_for('all_products_view_func'))
+	form = LoginForm()
+
+	if(form.validate_on_submit()):
+		user = User.get(form.username.data)
+		if(user is None or user.check_password(form.password.data) == False):
+			flash('User does not exist.')
+			return redirect(url_for('user_sign_in_view_func'))
+		login_user(user, remember=form.remember_me.data)
+		return redirect(url_for('all_products_view_func'))
+	print('Not validated')
+	return render_template('users/user_sign_in.html', title='Sign In', form = form)
+
+
+
 
 
 @flask_app_instance.route('/user_sign_out')
 def user_sign_out_view_func():
-	return render_template('users/user_sign_out.html', title='User Sign Out')
+	logout_user()
+	return redirect(url_for('user_sign_in_view_func'))
 	
 @flask_app_instance.route('/videogames')
 def videogames_view_func():

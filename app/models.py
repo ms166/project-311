@@ -1,9 +1,87 @@
 from flaskext.mysql import MySQL
-from app import flask_app_instance
+from app import flask_app_instance, login_manager
+from flask_login import UserMixin
+from werkzeug.security import generate_password_hash, check_password_hash
 
 mysql_instance = MySQL(flask_app_instance)
 
-# column-name data-type not-null default auto-increment constraints 
+# column-name data-type not-null default auto-increment constraints
+@login_manager.user_loader
+def load_user(user_id):
+	return User.get(user_id)
+
+
+
+
+
+class User(UserMixin):
+	def printUsers():
+		conn = mysql_instance.connect()
+		cursor = conn.cursor()
+		cursor.execute("""
+			SELECT * 
+			FROM USERS 
+			;
+			""")
+		res = cursor.fetchall()
+		for i in res:
+			print(i)
+
+	def create():
+		conn = mysql_instance.connect()
+		cursor = conn.cursor()
+		cursor.execute("""
+			CREATE TABLE IF NOT EXISTS USERS(
+				username varchar(50) NOT NULL PRIMARY KEY,
+				email varchar(50) NOT NULL,
+				password_hash varchar(128) NOT NULL 
+			);
+			""")
+
+	def insertDummyUser():
+		conn = mysql_instance.connect()
+		cursor = conn.cursor()
+		cursor.execute("""
+			SELECT * 
+			FROM USERS 
+			WHERE username='user1'
+			;
+			""")
+		res = cursor.fetchall()
+		if(len(res) != 0):
+			return
+		cursor.execute(f"""
+			INSERT INTO USERS(username, email, password_hash)
+			VALUES ('user1', 'email@email.com', '{generate_password_hash("pass1")}');
+			""")
+		conn.commit()
+
+	def get(username):
+		conn = mysql_instance.connect()
+		cursor = conn.cursor()
+		cursor.execute(f"""
+			SELECT * FROM USERS WHERE username = '{username}';
+			""")
+		userTuple = cursor.fetchone()
+		if(userTuple is None):
+			return None
+		username, email, password_hash = userTuple
+		return User(username, email, password_hash)
+
+	def __init__(self, username, email, password_hash):
+		self.username = username
+		self.email = email
+		self.password_hash = password_hash
+
+	def get_id(self):
+		return self.username
+
+	def set_password(self, password):
+		self.password_hash = generate_password_hash(password)
+
+	def check_password(self, password):
+		return check_password_hash(self.password_hash, password)
+
 
 class Food:
 	def create():
