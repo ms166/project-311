@@ -2,6 +2,7 @@ from flaskext.mysql import MySQL
 from app import flask_app_instance, login_manager
 from flask_login import UserMixin
 from werkzeug.security import generate_password_hash, check_password_hash
+import json
 
 mysql_instance = MySQL(flask_app_instance)
 
@@ -114,29 +115,32 @@ class Food:
 	def insertDefault():
 		conn = mysql_instance.connect()
 		cursor = conn.cursor()
-		cursor.execute("SELECT name FROM FOOD WHERE name='Asparagus';")
-		res = cursor.fetchall()
+		with open('app/default_tables/food.txt') as file:
+			foods = json.load(file)
+			for row in foods:
+				# change to round brackets
+				line = str(row)
+				line = list(line)
+				line[0] = '('
+				line[len(line) - 1] = ')'
+				line = "".join(line)
 
-		if(len(res) != 0):
-			return
+				# check if it already exists
+				cursor.execute(f"""
+					SELECT * FROM FOOD WHERE name='{row[0]}';
+					""")
+				ret = cursor.fetchone()
+				if(ret is not None):
+					continue
 
-		cursor.execute("""
-			INSERT INTO FOOD(name, quantity, price, weight, expiry)
-			VALUES 
-				('Asparagus', 10, 100, 300, CURDATE()),
-				('Apple', 18, 100, 50, CURDATE()),
-				('Orange', 23, 120, 20, CURDATE()),
-				('Banana', 50, 105, 23, CURDATE()),
-				('Sprouts', 60, 120, 234, CURDATE()),
-				('Beans', 40, 190, 421, CURDATE()),
-				('Tomato', 45, 300, 111, CURDATE()),
-				('Corn', 77, 180, 150, CURDATE()),
-				('Celery', 12, 289, 160, CURDATE()),
-				('Mango', 190, 76, 140, CURDATE()),
-				('Papaya', 200, 99, 120, CURDATE()),
-				('Olives', 300, 11, 110, CURDATE());
-			""")
+				# insert if it doesn't already exist
+				cursor.execute(f"""
+					INSERT INTO FOOD(name, quantity, price, weight, expiry)
+					VALUES{line};
+					""")
 		conn.commit()
+		conn.close()
+	
 
 	def getAll():
 		conn = mysql_instance.connect()
@@ -177,30 +181,35 @@ class Electronics:
 			names.append(i[0])
 		return names
 
+
 	def insertDefault():
 		conn = mysql_instance.connect()
 		cursor = conn.cursor()
-		cursor.execute("SELECT name FROM ELECTRONICS WHERE name='Headphones WH1000XM3';")
-		res = cursor.fetchall()
+		with open('app/default_tables/electronics.txt') as file:
+			electronics = json.load(file)
+			for row in electronics:
+				# change to round brackets
+				line = str(row)
+				line = list(line)
+				line[0] = '('
+				line[len(line) - 1] = ')'
+				line = "".join(line)
 
-		if(len(res) != 0):
-			return
+				# check if it already exists
+				cursor.execute(f"""
+					SELECT * FROM ELECTRONICS WHERE name='{row[0]}';
+					""")
+				ret = cursor.fetchone()
+				if(ret is not None):
+					continue
 
-		cursor.execute("""
-			INSERT INTO ELECTRONICS(name, quantity, price, manufacturer, warranty)
-			VALUES 
-				('Headphones WH1000XM3', 10, 1000, 'Sony', True),
-				('Beats Solo3', 10, 299, 'Beats', False),
-				('Apple Watch Series 5', 1, 500, 'Apple', True),
-				('Samsumg Evo U3', 7, 100, 'Samsung', True),
-				('Sandisk microSD', 9, 300, 'Sandisk', False),
-				('DeathAdder Mouse', 12, 2000, 'Razer', False),
-				('Earpods', 13, 1000, 'Apple', True),
-				('Keyboard', 13, 400, 'Logitech', False),
-				('Charge pad', 10, 300, 'Mophie', False),
-				('Bluetooth Speaker', 2, 200, 'Nixplay', True);
-			""")
+				# insert if it doesn't already exist
+				cursor.execute(f"""
+					INSERT INTO ELECTRONICS(name, quantity, price, manufacturer, warranty)
+					VALUES{line};
+					""")
 		conn.commit()
+		conn.close()
 
 	def getAll():
 		conn = mysql_instance.connect()
@@ -244,27 +253,32 @@ class Clothes:
 	def insertDefault():
 		conn = mysql_instance.connect()
 		cursor = conn.cursor()
-		cursor.execute("SELECT name FROM CLOTHES WHERE name='Hudson Jeans';")
-		res = cursor.fetchall()
+		with open('app/default_tables/clothes.txt') as file:
+			clothes = json.load(file)
+			for row in clothes:
+				# change to round brackets
+				line = str(row)
+				line = list(line)
+				line[0] = '('
+				line[len(line) - 1] = ')'
+				line = "".join(line)
 
-		if(len(res) != 0):
-			return
+				# check if it already exists
+				cursor.execute(f"""
+					SELECT * FROM CLOTHES WHERE name='{row[0]}';
+					""")
+				ret = cursor.fetchone()
+				if(ret is not None):
+					continue
 
-		cursor.execute("""
-			INSERT INTO CLOTHES(name, quantity, price, material, size)
-			VALUES 
-				('Hudson Jeans', 10, 191, 'Hudson', 30),
-				('Levis Bootcut Jeans', 10, 41, 'Levis', 32),
-				('Sneaker', 20, 191, 'New Balance', 25),
-				('Slim-fit Shirt', 11, 191, 'J.Crew', 28),
-				('Long Sleeve Shirt', 12, 191, 'Volcom', 31),
-				('Zipped Jacket', 18, 191, 'DXL', 31),
-				('Levis', 29, 191, 'Hudson', 30),
-				('Crewneck Sweaters', 32, 200, 'Assert', 30),
-				('Sweatpants', 12, 191, 'Yeokou', 21),
-				('Running Shoe', 93, 300, 'addidas', 22);
-			""")
+				# insert if it doesn't already exist
+				cursor.execute(f"""
+					INSERT INTO CLOTHES(name, quantity, price, material, size)
+					VALUES{line};
+					""")
 		conn.commit()
+		conn.close()
+
 
 	def getAll():
 		conn = mysql_instance.connect()
@@ -304,30 +318,35 @@ class Videogames:
 		for i in res:
 			names.append(i[0])
 		return names
+	
 	def insertDefault():
 		conn = mysql_instance.connect()
 		cursor = conn.cursor()
-		cursor.execute("SELECT name FROM VIDEOGAMES WHERE name='Days Gone';")
-		res = cursor.fetchall()
+		with open('app/default_tables/videogames.txt') as file:
+			videogames = json.load(file)
+			for row in videogames:
+				# change to round brackets
+				line = str(row)
+				line = list(line)
+				line[0] = '('
+				line[len(line) - 1] = ')'
+				line = "".join(line)
 
-		if(len(res) != 0):
-			return
+				# check if it already exists
+				cursor.execute(f"""
+					SELECT * FROM VIDEOGAMES WHERE name='{row[0]}';
+					""")
+				ret = cursor.fetchone()
+				if(ret is not None):
+					continue
 
-		cursor.execute("""
-			INSERT INTO VIDEOGAMES(name, quantity, price, company, release_date, platform)
-			VALUES 
-				('Days Gone', 10, 30, 'SIE Bend Studio', '2019-04-26', 'PS4'),
-				('Borderlands 3', 10, 30, '2k Games', '2019-09-13', 'PS4, Xbox, PC'),
-				('Overwatch', 10, 30, 'Blizzard', '2016-04-26', 'PS4, Xbox, PC'),
-				('Battlefield V', 10, 30, 'Electronic Arts', '2018-11-20', 'PS4, Xbox, PC'),
-				('Sniper Ghost Warrior', 10, 30, 'CI games', '2010-06-24', 'PS4, Xbox, PC'),
-				('Termintor Resistance', 10, 30, 'Teyon', '2019-12-10', 'PS4, Xbox, PC'),
-				('Wolfenstein Youngblood', 10, 30, 'Bethesda', '2019-07-01', 'PS4, Xbox, PC, Nintendo'),
-				('Jumanji', 10, 30, 'Funsolve LTD', '2019-11-08', 'PS4, Xbox, PC, Nintendo'),
-				('Rage 2', 10, 30, 'Avalance Studios', '2019-05-14', 'PS4, Xbox, PC'),
-				('Death Stranding', 10, 30, 'Kojima Productions', '2019-11-09', 'PS4, PC');
-				""")
+				# insert if it doesn't already exist
+				cursor.execute(f"""
+					INSERT INTO VIDEOGAMES(name, quantity, price, company, release_date, platform)
+					VALUES{line};
+					""")
 		conn.commit()
+		conn.close()
 
 	def getAll():
 		conn = mysql_instance.connect()
