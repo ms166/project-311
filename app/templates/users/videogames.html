@@ -1,3 +1,24 @@
 {% extends 'users/user_base.html' %}
+{% block head_1 %}
+	<link rel="stylesheet" href="{{ url_for('static', filename='css/list_of_prods.css') }}"  />
+{% endblock %}
+
 {% block content_1 %}
+	<table style="width:100%">
+		<caption>Video Games</caption>
+		{% for column in videogames_columns %}
+			<th>
+				{{ column }}
+			</th>
+		{% endfor %}
+		{% for row in videogames_rows %}
+			<tr>
+				{% for item in row %}
+				<td>
+					{{ item }}	
+				</td>
+				{% endfor %}
+			</tr><br>
+		{% endfor %}
+	</table>
 {% endblock %}

@@ -77,22 +77,43 @@ def users_info_view_func():
 @flask_app_instance.route('/all_products')
 @login_required
 def all_products_view_func():
-	return render_template('users/all_products.html', title='All Products')
+	food_rows = Food.getAll()
+	food_columns = Food.getColumnNames()
+
+	electronics_rows = Electronics.getAll()
+	electronics_columns = Electronics.getColumnNames()
+
+	clothes_rows = Clothes.getAll()
+	clothes_columns = Clothes.getColumnNames()
+
+	videogames_rows = Videogames.getAll()
+	videogames_columns = Videogames.getColumnNames()
+
+	return render_template('users/all_products.html', title='All Products', food_rows=food_rows, food_columns=food_columns, electronics_rows=electronics_rows, electronics_columns=electronics_columns, clothes_rows=clothes_rows, clothes_columns=clothes_columns, videogames_rows=videogames_rows, videogames_columns=videogames_columns)
 
 @flask_app_instance.route('/clothes')
 @login_required
 def clothes_view_func():
-	return render_template('users/clothes.html', title='Clothes')	
+	clothes_rows = Clothes.getAll()
+	clothes_columns = Clothes.getColumnNames()
+
+	return render_template('users/clothes.html', title='Clothes', clothes_rows=clothes_rows, clothes_columns=clothes_columns)	
 
 @flask_app_instance.route('/electronics')
 @login_required
 def electronics_view_func():
-	return render_template('users/electronics.html', title='Electronics')
+	electronics_rows = Electronics.getAll()
+	electronics_columns = Electronics.getColumnNames()
+
+	return render_template('users/electronics.html', title='Electronics', electronics_rows=electronics_rows, electronics_columns=electronics_columns)
 
 @flask_app_instance.route('/food')
 @login_required
 def food_view_func():
-	return render_template('users/food.html', title='Food')
+	food_rows = Food.getAll()
+	food_columns = Food.getColumnNames()
+
+	return render_template('users/food.html', title='Food', food_rows=food_rows, food_columns=food_columns)
 
 @flask_app_instance.route('/search')
 @login_required
@@ -126,7 +147,7 @@ def user_sign_in_view_func():
 		if(user.check_password(form.password.data) == False):
 			flash('Wrong password.')
 			return redirect(url_for('user_sign_in_view_func'))
-			
+
 		login_user(user, remember=form.remember_me.data)
 		next_page = request.args.get('next')
 		if(next_page is None):
@@ -147,4 +168,6 @@ def user_sign_out_view_func():
 @flask_app_instance.route('/videogames')
 @login_required
 def videogames_view_func():
-	return render_template('users/videogames.html', title='Videogames')
+	videogames_rows = Videogames.getAll()
+	videogames_columns = Videogames.getColumnNames()
+	return render_template('users/videogames.html', title='Videogames', videogames_rows=videogames_rows, videogames_columns=videogames_columns)
