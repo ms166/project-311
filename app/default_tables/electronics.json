@@ -1,0 +1,72 @@
+[
+    [
+        "Headphones WH1000XM3",
+        10,
+        1000,
+        "Sony",
+        1
+    ],
+    [
+        "Beats Solo3",
+        10,
+        299,
+        "Beats",
+        0
+    ],
+    [
+        "Apple Watch Series 5",
+        1,
+        500,
+        "Apple",
+        1
+    ],
+    [
+        "Samsumg Evo U3",
+        7,
+        100,
+        "Samsung",
+        1
+    ],
+    [
+        "Sandisk microSD",
+        9,
+        300,
+        "Sandisk",
+        0
+    ],
+    [
+        "DeathAdder Mouse",
+        12,
+        2000,
+        "Razer",
+        0
+    ],
+    [
+        "Earpods",
+        13,
+        1000,
+        "Apple",
+        1
+    ],
+    [
+        "Keyboard",
+        13,
+        400,
+        "Logitech",
+        0
+    ],
+    [
+        "Charge pad",
+        10,
+        300,
+        "Mophie",
+        0
+    ],
+    [
+        "Bluetooth Speaker",
+        2,
+        200,
+        "Nixplay",
+        1
+    ]
+]

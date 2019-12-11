@@ -115,7 +115,7 @@ class Food:
 	def insertDefault():
 		conn = mysql_instance.connect()
 		cursor = conn.cursor()
-		with open('app/default_tables/food.txt') as file:
+		with open('app/default_tables/food.json') as file:
 			foods = json.load(file)
 			for row in foods:
 				# change to round brackets
@@ -185,7 +185,7 @@ class Electronics:
 	def insertDefault():
 		conn = mysql_instance.connect()
 		cursor = conn.cursor()
-		with open('app/default_tables/electronics.txt') as file:
+		with open('app/default_tables/electronics.json') as file:
 			electronics = json.load(file)
 			for row in electronics:
 				# change to round brackets
@@ -253,7 +253,7 @@ class Clothes:
 	def insertDefault():
 		conn = mysql_instance.connect()
 		cursor = conn.cursor()
-		with open('app/default_tables/clothes.txt') as file:
+		with open('app/default_tables/clothes.json') as file:
 			clothes = json.load(file)
 			for row in clothes:
 				# change to round brackets
@@ -322,7 +322,7 @@ class Videogames:
 	def insertDefault():
 		conn = mysql_instance.connect()
 		cursor = conn.cursor()
-		with open('app/default_tables/videogames.txt') as file:
+		with open('app/default_tables/videogames.json') as file:
 			videogames = json.load(file)
 			for row in videogames:
 				# change to round brackets
