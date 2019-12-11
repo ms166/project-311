@@ -2,8 +2,9 @@ from flask import render_template, flash, redirect, url_for, request
 from app import flask_app_instance
 from flaskext.mysql import MySQL
 from app.models import Food, Electronics, Clothes, Videogames, User
-from app.forms import LoginForm
-from flask_login import current_user, login_user, logout_user
+from app.forms import LoginForm, RegistrationForm
+from flask_login import current_user, login_user, logout_user, login_required
+from werkzeug.urls import url_parse
 
 mysql_instance = MySQL(flask_app_instance)
 
@@ -74,46 +75,63 @@ def users_info_view_func():
 # ====================================
 
 @flask_app_instance.route('/all_products')
+@login_required
 def all_products_view_func():
 	return render_template('users/all_products.html', title='All Products')
 
 @flask_app_instance.route('/clothes')
+@login_required
 def clothes_view_func():
 	return render_template('users/clothes.html', title='Clothes')	
 
 @flask_app_instance.route('/electronics')
+@login_required
 def electronics_view_func():
 	return render_template('users/electronics.html', title='Electronics')
 
 @flask_app_instance.route('/food')
+@login_required
 def food_view_func():
 	return render_template('users/food.html', title='Food')
 
 @flask_app_instance.route('/search')
+@login_required
 def search_view_func():
 	return render_template('users/search.html', title='Search Products')
 
-@flask_app_instance.route('/user_register')
+@flask_app_instance.route('/user_register', methods=['GET', 'POST'])
 def user_register_view_func():
-	return render_template('users/user_register.html', title='User Register')
+	if(current_user.is_authenticated):
+		return redirect(url_for('all_products_view_func'))
+	form = RegistrationForm()
+	if(form.validate_on_submit()):
+		User.insert(form.username.data, form.email.data, form.password.data)
+		flash('You have been registered.')
+		return redirect(url_for('user_sign_in_view_func'))
+	return render_template('users/user_register.html', title='User Register', form=form)
 
 @flask_app_instance.route('/user_sign_in', methods=['GET', 'POST'])
 def user_sign_in_view_func():
 	User.create()
-	User.insertDummyUser()
 
 	if(current_user.is_authenticated):
 		return redirect(url_for('all_products_view_func'))
 	form = LoginForm()
-
 	if(form.validate_on_submit()):
-		user = User.get(form.username.data)
-		if(user is None or user.check_password(form.password.data) == False):
+		user = User.getByUsername(form.username.data)
+		if(user is None):
 			flash('User does not exist.')
 			return redirect(url_for('user_sign_in_view_func'))
+
+		if(user.check_password(form.password.data) == False):
+			flash('Wrong password.')
+			return redirect(url_for('user_sign_in_view_func'))
+			
 		login_user(user, remember=form.remember_me.data)
-		return redirect(url_for('all_products_view_func'))
-	print('Not validated')
+		next_page = request.args.get('next')
+		if(next_page is None):
+			return redirect(url_for('user_sign_in_view_func'))
+		return redirect(next_page)
 	return render_template('users/user_sign_in.html', title='Sign In', form = form)
 
 
@@ -121,10 +139,12 @@ def user_sign_in_view_func():
 
 
 @flask_app_instance.route('/user_sign_out')
+@login_required
 def user_sign_out_view_func():
 	logout_user()
 	return redirect(url_for('user_sign_in_view_func'))
 	
 @flask_app_instance.route('/videogames')
+@login_required
 def videogames_view_func():
 	return render_template('users/videogames.html', title='Videogames')
