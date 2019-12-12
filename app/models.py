@@ -72,7 +72,7 @@ class User(UserMixin):
 			raise(Exception('User already exists.'))
 		cursor.execute(f"""
 			INSERT INTO USERS(username, email, password_hash)
-			VALUES ('{username}', '{email}', '{generate_password_hash("password")}');
+			VALUES ('{username}', '{email}', '{generate_password_hash(password)}');
 			""")
 		conn.commit()
 
