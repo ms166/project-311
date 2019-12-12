@@ -12,6 +12,50 @@ def load_user(user_id):
 	return User.getByUsername(user_id)
 
 
+class Cart:
+	def create():
+		conn = mysql_instance.connect()
+		cursor = conn.cursor()
+		cursor.execute("""
+			CREATE TABLE IF NOT EXISTS CART(
+				item_name varchar(30) NOT NULL, 
+				category varchar(20) NOT NULL, 
+				quantity int NOT NULL, 
+				price int NOT NULL, 
+				user varchar(50) NOT NULL,
+				PRIMARY KEY(item_name, user)
+			);
+			""")
+
+	def getColumnNames():
+		return ['item_name', 'category', 'quantity', 'Unit Price', 'Total Price']
+
+	def getByUser(username):
+		conn = mysql_instance.connect()
+		cursor = conn.cursor()
+		cursor.execute(f""" 
+			SELECT item_name, category, quantity, price AS 'Unit Price', quantity * price AS 'Total Price'
+			FROM CART WHERE user='{username}';
+			""")
+		res = cursor.fetchall()
+		return res
+
+	def insert(item_name, category, quantity, price, user):
+		conn = mysql_instance.connect()
+		cursor = conn.cursor()
+		cursor.execute(f"SELECT * FROM CART WHERE item_name='{item_name}' AND user='{user}' ;")
+		product_already_in_cart = cursor.fetchone()
+		if(product_already_in_cart is not None):
+			cursor.execute(f"UPDATE CART SET quantity=quantity+{quantity} WHERE item_name='{item_name}' ;")
+			conn.commit()
+			return
+
+		cursor.execute(f"""
+			INSERT INTO CART(item_name, category, quantity, price, user)
+			VALUES('{item_name}', '{category}', {quantity}, {price}, '{user}');
+			""")
+		conn.commit()
+
 
 class User(UserMixin):
 	def insert(username, email, password):
@@ -88,8 +132,8 @@ class User(UserMixin):
 	def get_id(self):
 		return self.username
 
-	# def set_password(self, password):
-	# 	self.password_hash = generate_password_hash(password)
+	def set_password(self, password):
+		self.password_hash = generate_password_hash(password)
 
 	def check_password(self, password):
 		return check_password_hash(self.password_hash, password)
@@ -358,6 +402,16 @@ class Videogames:
 					""")
 		conn.commit()
 		conn.close()
+
+
+	def getPrice(name):
+		conn = mysql_instance.connect()
+		cursor = conn.cursor()
+		cursor.execute(f"""
+			SELECT price FROM VIDEOGAMES WHERE name = '{name}';
+			""")
+		price = cursor.fetchone()
+		return price[0]
 
 	def getAll():
 		conn = mysql_instance.connect()

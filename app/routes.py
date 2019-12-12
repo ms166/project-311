@@ -1,7 +1,7 @@
 from flask import render_template, flash, redirect, url_for, request
 from app import flask_app_instance
 from flaskext.mysql import MySQL
-from app.models import Food, Electronics, Clothes, Videogames, User
+from app.models import Food, Electronics, Clothes, Videogames, User, Cart
 from app.forms import LoginForm, RegistrationForm
 from flask_login import current_user, login_user, logout_user, login_required
 from werkzeug.urls import url_parse
@@ -91,6 +91,16 @@ def all_products_view_func():
 
 	return render_template('users/all_products.html', title='All Products', food_rows=food_rows, food_columns=food_columns, electronics_rows=electronics_rows, electronics_columns=electronics_columns, clothes_rows=clothes_rows, clothes_columns=clothes_columns, videogames_rows=videogames_rows, videogames_columns=videogames_columns)
 
+
+@flask_app_instance.route('/cart')
+@login_required
+def cart_view_func():
+	Cart.create()
+	cart_rows = Cart.getByUser(current_user.username)
+	cart_columns = Cart.getColumnNames()
+	return render_template('users/cart.html', title='Cart', cart_rows=cart_rows, cart_columns=cart_columns)
+
+
 @flask_app_instance.route('/clothes')
 @login_required
 def clothes_view_func():
@@ -144,6 +154,7 @@ def user_sign_in_view_func():
 			flash('User does not exist.')
 			return redirect(url_for('user_sign_in_view_func'))
 
+		print(form.password.data)
 		if(user.check_password(form.password.data) == False):
 			flash('Wrong password.')
 			return redirect(url_for('user_sign_in_view_func'))
@@ -165,9 +176,28 @@ def user_sign_out_view_func():
 	logout_user()
 	return redirect(url_for('user_sign_in_view_func'))
 	
-@flask_app_instance.route('/videogames')
+@flask_app_instance.route('/videogames', methods=['GET', 'POST'])
 @login_required
 def videogames_view_func():
+	Cart.create() # create if not exists
+
+
+
+	args_response = request.args.to_dict()
+	form_response = request.form.to_dict()
+	print(f"args response: {args_response}")
+	print(f"form response: {form_response}")
+
+
+	item_name = request.args.get('item_name')
+	if(item_name is not None):
+		quantity = request.args.get('quantity') 
+		category = 'Videogames'
+		price = Videogames.getPrice(item_name)
+		user = current_user.username
+		# print(item_name, quantity, price, category, user)
+		Cart.insert(item_name, category, quantity, price, user)
+
 	videogames_rows = Videogames.getAll()
 	videogames_columns = Videogames.getColumnNames()
 	return render_template('users/videogames.html', title='Videogames', videogames_rows=videogames_rows, videogames_columns=videogames_columns)

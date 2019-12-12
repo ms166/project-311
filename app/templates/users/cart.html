@@ -1,0 +1,29 @@
+{% extends 'users/user_base.html' %}
+{% block head_1 %}
+	<link rel="stylesheet" href="{{ url_for('static', filename='css/list_of_prods.css') }}"  />
+{% endblock %}
+
+{% block content_1 %}
+	<table style="width:100%">
+		<caption>Cart for {{ current_user.username }}</caption>
+		{% if cart_rows %}
+			{% for column in cart_columns %}
+				<th>
+					{{ column }}
+				</th>
+			{% endfor %}
+
+			{% for row in cart_rows %}
+				<tr>
+					{% for item in row %}
+						<td>
+							{{ item }}	
+						</td>
+					{% endfor %}
+				</tr><br>
+			{% endfor %}
+		{% else %}
+			<p>No items in cart.</p>
+		{% endif %}
+	</table>
+{% endblock %}
