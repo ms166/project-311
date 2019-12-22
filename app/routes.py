@@ -19,8 +19,19 @@ def homepage_view_func():
 # Miscellaneous functions
 # ====================================
 
+def createIfNotExists():
+	Food.create()
+	Electronics.create()
+	Clothes.create()
+	Videogames.create()
+	Cart.create()
+	User.create()
 
-
+def insertDefaultProducts():
+	Food.insertDefault()
+	Electronics.insertDefault()
+	Clothes.insertDefault()
+	Videogames.insertDefault()
 
 
 # ====================================
@@ -28,25 +39,19 @@ def homepage_view_func():
 # ====================================
 @flask_app_instance.route('/admin_products')
 def admin_products_view_func():
-	Food.create()
-	Electronics.create()
-	Clothes.create()
-	Videogames.create()
+	createIfNotExists()
+	insertDefaultProducts()
 
-	Food.insertDefault()
 	food_rows = Food.getAll()
 	food_columns = Food.getColumnNames()
 
-	Electronics.insertDefault()
 	electronics_rows = Electronics.getAll()
 	electronics_columns = Electronics.getColumnNames()
 
-	Clothes.insertDefault()
 	clothes_rows = Clothes.getAll()
 	clothes_columns = Clothes.getColumnNames()
 
 
-	Videogames.insertDefault()
 	videogames_rows = Videogames.getAll()
 	videogames_columns = Videogames.getColumnNames()
 	return render_template('admin/admin_products.html', title='List of Products', food_rows=food_rows, food_columns=food_columns, electronics_rows=electronics_rows, electronics_columns=electronics_columns, clothes_rows=clothes_rows, clothes_columns=clothes_columns, videogames_rows=videogames_rows, videogames_columns=videogames_columns)
@@ -54,18 +59,30 @@ def admin_products_view_func():
 
 @flask_app_instance.route('/low_products')
 def low_products_view_func():
+	createIfNotExists()
+	insertDefaultProducts()
+
 	return render_template('admin/low_products.html', title='Products Low on Quantity')
 
 @flask_app_instance.route('/sales_analysis')
 def sales_analysis_view_func():
+	createIfNotExists()
+	insertDefaultProducts()
+
 	return render_template('admin/sales_analysis.html', title='Sales Analysis')
 
 @flask_app_instance.route('/scan')
 def scan_view_func():
+	createIfNotExists()
+	insertDefaultProducts()
+
 	return render_template('admin/scan.html', title='Scan Products')
 
 @flask_app_instance.route('/users_info')
 def users_info_view_func():
+	createIfNotExists()
+	insertDefaultProducts()
+	
 	return render_template('admin/users_info.html', title='User Information')
 
 
@@ -77,6 +94,9 @@ def users_info_view_func():
 @flask_app_instance.route('/all_products')
 @login_required
 def all_products_view_func():
+	createIfNotExists()
+	insertDefaultProducts()
+
 	food_rows = Food.getAll()
 	food_columns = Food.getColumnNames()
 
@@ -113,7 +133,8 @@ def all_products_view_func():
 @flask_app_instance.route('/cart')
 @login_required
 def cart_view_func():
-	Cart.create()
+	createIfNotExists()
+
 	cart_rows = Cart.getByUser(current_user.username)
 	cart_columns = Cart.getColumnNames()
 	return render_template('users/cart.html', title='Cart', cart_rows=cart_rows, cart_columns=cart_columns)
@@ -122,6 +143,9 @@ def cart_view_func():
 @flask_app_instance.route('/clothes')
 @login_required
 def clothes_view_func():
+	createIfNotExists()
+	insertDefaultProducts()
+
 	clothes_rows = Clothes.getAll()
 	clothes_columns = Clothes.getColumnNames()
 
@@ -139,6 +163,9 @@ def clothes_view_func():
 @flask_app_instance.route('/electronics')
 @login_required
 def electronics_view_func():
+	createIfNotExists()
+	insertDefaultProducts()
+
 	electronics_rows = Electronics.getAll()
 	electronics_columns = Electronics.getColumnNames()
 
@@ -156,6 +183,9 @@ def electronics_view_func():
 @flask_app_instance.route('/food')
 @login_required
 def food_view_func():
+	createIfNotExists()
+	insertDefaultProducts()
+
 	food_rows = Food.getAll()
 	food_columns = Food.getColumnNames()
 
@@ -174,10 +204,16 @@ def food_view_func():
 @flask_app_instance.route('/search')
 @login_required
 def search_view_func():
+	createIfNotExists()
+	insertDefaultProducts()
+
 	return render_template('users/search.html', title='Search Products')
 
 @flask_app_instance.route('/user_register', methods=['GET', 'POST'])
 def user_register_view_func():
+	createIfNotExists()
+	insertDefaultProducts()
+
 	if(current_user.is_authenticated):
 		return redirect(url_for('all_products_view_func'))
 	form = RegistrationForm()
@@ -189,7 +225,8 @@ def user_register_view_func():
 
 @flask_app_instance.route('/user_sign_in', methods=['GET', 'POST'])
 def user_sign_in_view_func():
-	User.create()
+	createIfNotExists()
+	insertDefaultProducts()
 
 	if(current_user.is_authenticated):
 		return redirect(url_for('all_products_view_func'))
@@ -225,14 +262,14 @@ def user_sign_out_view_func():
 @flask_app_instance.route('/videogames', methods=['GET', 'POST'])
 @login_required
 def videogames_view_func():
-	Cart.create() # create if not exists
+	createIfNotExists()
+	insertDefaultProducts()
 
 
-
-	args_response = request.args.to_dict()
-	form_response = request.form.to_dict()
-	print(f"args response: {args_response}")
-	print(f"form response: {form_response}")
+	# args_response = request.args.to_dict()
+	# form_response = request.form.to_dict()
+	# print(f"args response: {args_response}")
+	# print(f"form response: {form_response}")
 
 
 	item_name = request.args.get('item_name')

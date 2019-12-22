@@ -20,9 +20,9 @@
 				{% endfor %}
 				<td>
 					<form action="" target="_self">
-						<input type="hidden" name="item_name" value="{{ row[1] }}"/>
-						<input type="text" name="quantity" value="1" size="2" />
-						<input type="submit" value="Add to Cart" />	
+						<input type="hidden" name="item_name" value="{{ row[1] }}">
+						<input type="number" name="quantity" value="1" min="1" max="{{ row[2] }}" >
+						<input type="submit" value="Add to Cart" >	
 					</form>
 				</td>
 			</tr><br>

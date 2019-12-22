@@ -4,11 +4,14 @@ from flask_login import UserMixin
 from werkzeug.security import generate_password_hash, check_password_hash
 import json
 
+
 mysql_instance = MySQL(flask_app_instance)
 
 # column-name data-type not-null default auto-increment constraints
 @login_manager.user_loader
 def load_user(user_id):
+	User.create()
+
 	return User.getByUsername(user_id)
 
 
