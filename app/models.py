@@ -11,9 +11,28 @@ mysql_instance = MySQL(flask_app_instance)
 @login_manager.user_loader
 def load_user(user_id):
 	User.create()
-
 	return User.getByUsername(user_id)
 
+
+def computePriceRange(price_range):
+	min_price = max_price = 0
+	if(price_range == 'order0-1'):
+		min_price = 1
+		max_price = 10
+	elif(price_range == 'order1-2'):
+		min_price = 10
+		max_price = 100
+	elif(price_range == 'order2-3'):
+		min_price = 100
+		max_price = 1000
+	elif(price_range == 'order3-4'):
+		min_price = 1000
+		max_price = 10000
+	else:
+		assert price_range == 'all'
+		min_price = 1
+		max_price = 100000
+	return min_price, max_price
 
 class Cart:
 	def create():
@@ -160,6 +179,21 @@ class Food:
 			ALTER TABLE FOOD AUTO_INCREMENT=1001;
 			""")
 
+	def searchQuery(item_name, price_range):
+		conn = mysql_instance.connect()
+		cursor = conn.cursor()
+
+		min_price, max_price = computePriceRange(price_range)
+
+		cursor.execute(f"""
+			SELECT name, quantity, price, 'food' as category
+			FROM FOOD
+			WHERE name like '%{item_name}%' AND price >= {min_price} AND price <= {max_price}
+			ORDER BY price ASC;
+			""")
+		res = cursor.fetchall()
+		return res # returns tuple of tuples
+
 	def getPrice(item_name):
 		conn = mysql_instance.connect()
 		cursor = conn.cursor()
@@ -237,6 +271,21 @@ class Electronics:
 		cursor.execute("""
 			ALTER TABLE ELECTRONICS AUTO_INCREMENT=2001;
 			""")
+
+	def searchQuery(item_name, price_range):
+		conn = mysql_instance.connect()
+		cursor = conn.cursor()
+
+		min_price, max_price = computePriceRange(price_range)
+
+		cursor.execute(f"""
+			SELECT name, quantity, price, 'electronics' as category
+			FROM ELECTRONICS
+			WHERE name like '%{item_name}%' AND price >= {min_price} AND price <= {max_price}
+			ORDER BY price ASC;
+			""")
+		res = cursor.fetchall()
+		return res # returns tuple of tuples
 
 	def getPrice(item_name):
 		conn = mysql_instance.connect()
@@ -316,6 +365,21 @@ class Clothes:
 			ALTER TABLE CLOTHES AUTO_INCREMENT=3001;
 			""")
 
+	def searchQuery(item_name, price_range):
+		conn = mysql_instance.connect()
+		cursor = conn.cursor()
+
+		min_price, max_price = computePriceRange(price_range)
+
+		cursor.execute(f"""
+			SELECT name, quantity, price, 'clothes' as category
+			FROM CLOTHES
+			WHERE name like '%{item_name}%' AND price >= {min_price} AND price <= {max_price}
+			ORDER BY price ASC;
+			""")
+		res = cursor.fetchall()
+		return res # returns tuple of tuples
+
 	def getPrice(item_name):
 		conn = mysql_instance.connect()
 		cursor = conn.cursor()
@@ -393,6 +457,21 @@ class Videogames:
 		cursor.execute("""
 			ALTER TABLE VIDEOGAMES AUTO_INCREMENT=4001;
 			""")
+
+	def searchQuery(item_name, price_range):
+		conn = mysql_instance.connect()
+		cursor = conn.cursor()
+
+		min_price, max_price = computePriceRange(price_range)
+
+		cursor.execute(f"""
+			SELECT name, quantity, price, 'videogames' as category
+			FROM VIDEOGAMES
+			WHERE name like '%{item_name}%' AND price >= {min_price} AND price <= {max_price}
+			ORDER BY price ASC;
+			""")
+		res = cursor.fetchall()
+		return res # returns tuple of tuples
 
 	def getColumnNames():
 		conn = mysql_instance.connect()

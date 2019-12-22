@@ -1,9 +1,70 @@
 {% extends 'users/user_base.html' %}
+{% block head_1 %}
+	<link rel="stylesheet" href="{{ url_for('static', filename='css/list_of_prods.css') }}"  />
+{% endblock %}
 {% block content_1 %}
 	<h2>
 		Search Products	
 	</h2>
 	<form action="" target="_self">
-		<input type="text" name="item_name" value="Enter product name" size=30>
-		</form>
+		Product Name:
+		<input type="text" name="item_name" value="" size=30><br>
+
+		Product Type:
+		<select name="product_type">
+	    	<option value="all">All Categories</option>
+			<option value="food">Food</option>
+			<option value="clothes">Clothes</option>
+		 	<option value="electronics">Electronics</option>
+		 	<option value="videogames">Videogames</option>
+		</select><br>
+
+		Price range:
+		<select name="price_range">
+	    	<option value="all">All ranges</option>
+			<option value="order0-1">1 - 10</option>
+			<option value="order1-2">10 - 100</option>
+		 	<option value="order2-3">100 - 1000</option>
+		 	<option value="order3-4">1000 - 10000</option>
+		</select><br>
+
+		<input type="submit" value="Search">
+	</form>
+	{% if queryFlag %}
+		{% if res %}
+			<table style="width:100%">
+				<caption>Search Results</caption>
+				{% for column in columns %}
+					<th>
+						{{ column }}
+					</th>
+				{% endfor %}
+				{% for row in res %}
+					<tr>
+						{% for item in row %}
+						<td>
+							{{ item }}	
+						</td>
+						{% endfor %}
+						<td>
+							<form action="" target="_self">
+								<input type="hidden" name="item_name" value="{{ row[0] }}">
+								<input type="hidden" name="category" value="{{ row[3] }}">
+								<input type="number" name="quantity" value="1" min="1" max="{{ row[1] }}" >
+								<input type="submit" value="Add to Cart" >	
+							</form>
+						</td>
+					</tr><br>
+				{% endfor %}
+			</table>
+		{% else %}
+			<table style="width:100%">
+				<caption>Search Results</caption>
+					<th>
+						No matches found.
+					</th>
+			</table>
+		{% endif %}
+	{% endif %}
+
 {% endblock %}

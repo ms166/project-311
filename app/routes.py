@@ -82,7 +82,7 @@ def scan_view_func():
 def users_info_view_func():
 	createIfNotExists()
 	insertDefaultProducts()
-	
+
 	return render_template('admin/users_info.html', title='User Information')
 
 
@@ -201,13 +201,71 @@ def food_view_func():
 
 	return render_template('users/food.html', title='Food', food_rows=food_rows, food_columns=food_columns)
 
-@flask_app_instance.route('/search')
+@flask_app_instance.route('/search', methods=['GET', 'POST'])
 @login_required
 def search_view_func():
 	createIfNotExists()
 	insertDefaultProducts()
 
-	return render_template('users/search.html', title='Search Products')
+	# args_response = request.args.to_dict()
+	# form_response = request.form.to_dict()
+	# print(f"args response: {args_response}")
+	# print(f"form response: {form_response}")
+
+	item_name = request.args.get('item_name')
+	quantity = request.args.get('quantity')
+	queryFlag = False
+	res = None
+	if(item_name is not None and quantity is None and len(item_name) != 0): # search request
+		queryFlag = True
+
+		product_type = request.args.get('product_type')
+		price_range = request.args.get('price_range')
+
+		res_food = Food.searchQuery(item_name, price_range)
+		res_clothes = Clothes.searchQuery(item_name, price_range)
+		res_electronics = Electronics.searchQuery(item_name, price_range)
+		res_videogames = Videogames.searchQuery(item_name, price_range)
+
+		res = ()
+		if(product_type == 'food'):
+			res = res_food
+		elif(product_type == 'clothes'):
+			res = res_clothes
+		elif(product_type == 'electronics'):
+			res = res_electronics
+		elif(product_type == 'videogames'):
+			res = res_videogames
+		else:
+			assert product_type == 'all'
+			if(res_food is not None):
+				res = res + res_food
+			if(res_clothes is not None):
+				res = res + res_clothes
+			if(res_electronics is not None):
+				res = res + res_electronics
+			if(res_videogames is not None):
+				res = res + res_videogames
+	elif(item_name is not None and len(item_name) != 0): # add to cart request
+		queryFlag = True
+
+		quantity = request.args.get('quantity') 
+		category = request.args.get('category')
+		if(category == 'food'):
+			price = Food.getPrice(item_name)
+		elif(category == 'clothes'):
+			price = Clothes.getPrice(item_name)
+		elif(category == 'electronics'):
+			price = Electronics.getPrice(item_name)
+		else:
+			assert(category == 'videogames')
+			price = Videogames.getPrice(item_name)
+		user = current_user.username
+		# print(item_name, quantity, price, category, user)
+		Cart.insert(item_name, category, quantity, price, user)
+
+	columns = ['Item Name', 'Quantity', 'Price', 'Category']
+	return render_template('users/search.html', title='Search Products', queryFlag=queryFlag, res=res, columns=columns)
 
 @flask_app_instance.route('/user_register', methods=['GET', 'POST'])
 def user_register_view_func():
