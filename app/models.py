@@ -157,6 +157,15 @@ class Food:
 			ALTER TABLE FOOD AUTO_INCREMENT=1001;
 			""")
 
+	def getPrice(item_name):
+		conn = mysql_instance.connect()
+		cursor = conn.cursor()
+		cursor.execute(f"""
+			SELECT price FROM FOOD WHERE name='{item_name}';
+			""")
+		price = cursor.fetchone()
+		return price[0] # return price[0] because price is a tuple type
+
 	def getColumnNames():
 		conn = mysql_instance.connect()
 		cursor = conn.cursor()
@@ -226,6 +235,15 @@ class Electronics:
 			ALTER TABLE ELECTRONICS AUTO_INCREMENT=2001;
 			""")
 
+	def getPrice(item_name):
+		conn = mysql_instance.connect()
+		cursor = conn.cursor()
+		cursor.execute(f"""
+			SELECT price FROM ELECTRONICS WHERE name='{item_name}';
+			""")
+		price = cursor.fetchone()
+		return price[0] # return price[0] because price is a tuple type
+
 	def getColumnNames():
 		conn = mysql_instance.connect()
 		cursor = conn.cursor()
@@ -294,6 +312,15 @@ class Clothes:
 		cursor.execute("""
 			ALTER TABLE CLOTHES AUTO_INCREMENT=3001;
 			""")
+
+	def getPrice(item_name):
+		conn = mysql_instance.connect()
+		cursor = conn.cursor()
+		cursor.execute(f"""
+			SELECT price FROM CLOTHES WHERE name='{item_name}';
+			""")
+		price = cursor.fetchone()
+		return price[0] # return price[0] because price is a tuple type
 
 	def getColumnNames():
 		conn = mysql_instance.connect()

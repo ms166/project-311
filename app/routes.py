@@ -89,6 +89,24 @@ def all_products_view_func():
 	videogames_rows = Videogames.getAll()
 	videogames_columns = Videogames.getColumnNames()
 
+	item_name = request.args.get('item_name')
+	if(item_name is not None):
+		# item_name, category, quantity, price, user
+		category = request.args.get('category') 
+		if(category == 'Food'):
+			price = Food.getPrice(item_name)
+		elif(category == 'Electronics'):
+			price = Electronics.getPrice(item_name)
+		elif(category == 'Videogames'):
+			price = Videogames.getPrice(item_name)
+		else:
+			assert category == 'Clothes'
+			price = Clothes.getPrice(item_name)
+
+		quantity = request.args.get('quantity')
+		user = current_user.username
+		Cart.insert(item_name, category, quantity, price, user)
+
 	return render_template('users/all_products.html', title='All Products', food_rows=food_rows, food_columns=food_columns, electronics_rows=electronics_rows, electronics_columns=electronics_columns, clothes_rows=clothes_rows, clothes_columns=clothes_columns, videogames_rows=videogames_rows, videogames_columns=videogames_columns)
 
 
@@ -107,6 +125,15 @@ def clothes_view_func():
 	clothes_rows = Clothes.getAll()
 	clothes_columns = Clothes.getColumnNames()
 
+	item_name = request.args.get('item_name')
+	if(item_name is not None):
+		# item_name, category, quantity, price, user
+		category = 'Clothes'
+		quantity = request.args.get('quantity')
+		price = Clothes.getPrice(item_name)
+		user = current_user.username
+		Cart.insert(item_name, category, quantity, price, user)
+
 	return render_template('users/clothes.html', title='Clothes', clothes_rows=clothes_rows, clothes_columns=clothes_columns)	
 
 @flask_app_instance.route('/electronics')
@@ -115,6 +142,15 @@ def electronics_view_func():
 	electronics_rows = Electronics.getAll()
 	electronics_columns = Electronics.getColumnNames()
 
+	item_name = request.args.get('item_name')
+	if(item_name is not None):
+		# item_name, category, quantity, price, user
+		category = 'Electronics'
+		quantity = request.args.get('quantity')
+		price = Electronics.getPrice(item_name)
+		user = current_user.username
+		Cart.insert(item_name, category, quantity, price, user)
+
 	return render_template('users/electronics.html', title='Electronics', electronics_rows=electronics_rows, electronics_columns=electronics_columns)
 
 @flask_app_instance.route('/food')
@@ -122,6 +158,16 @@ def electronics_view_func():
 def food_view_func():
 	food_rows = Food.getAll()
 	food_columns = Food.getColumnNames()
+
+	item_name = request.args.get('item_name')
+	if(item_name is not None):
+		# item_name, category, quantity, price, user
+		category = 'Food'
+		quantity = request.args.get('quantity')
+		price = Food.getPrice(item_name)
+		user = current_user.username
+		Cart.insert(item_name, category, quantity, price, user)
+
 
 	return render_template('users/food.html', title='Food', food_rows=food_rows, food_columns=food_columns)
 
