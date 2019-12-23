@@ -135,6 +135,14 @@ def all_products_view_func():
 def cart_view_func():
 	createIfNotExists()
 
+	print(f"args response: {request.args.to_dict()}")
+	print(f"form response: {request.form.to_dict()}")
+
+	item_to_delete = request.args.get('item_name')
+	if(item_to_delete is not None):
+		quantity = request.args.get('quantity')
+		Cart.delete(item_to_delete, quantity)
+
 	cart_rows = Cart.getByUser(current_user.username)
 	cart_columns = Cart.getColumnNames()
 	return render_template('users/cart.html', title='Cart', cart_rows=cart_rows, cart_columns=cart_columns)

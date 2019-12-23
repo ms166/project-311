@@ -49,6 +49,21 @@ class Cart:
 			);
 			""")
 
+	def delete(item_name, quantity):
+		conn = mysql_instance.connect()
+		cursor = conn.cursor()
+		cursor.execute(f"""
+			UPDATE CART
+			SET quantity = quantity - {quantity}
+			WHERE item_name = '{item_name}';
+			""")
+		cursor.execute(f"""
+			DELETE FROM CART
+			WHERE quantity = 0;
+			""")
+		conn.commit();
+
+
 	def getColumnNames():
 		return ['item_name', 'category', 'quantity', 'Unit Price', 'Total Price']
 
