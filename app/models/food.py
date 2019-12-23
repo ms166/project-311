@@ -1,3 +1,12 @@
+from flaskext.mysql import MySQL
+from app import flask_app_instance, login_manager
+from flask_login import UserMixin
+from werkzeug.security import generate_password_hash, check_password_hash
+import json
+from .ComputePriceRange import computePriceRange
+
+mysql_instance = MySQL(flask_app_instance)
+
 class Food:
 	def create():
 		conn = mysql_instance.connect()
