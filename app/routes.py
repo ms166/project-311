@@ -110,12 +110,12 @@ def admin_products_view_func():
 	return render_template('admin/admin_products.html', title='List of Products', food_rows=food_rows, food_columns=food_columns, electronics_rows=electronics_rows, electronics_columns=electronics_columns, clothes_rows=clothes_rows, clothes_columns=clothes_columns, videogames_rows=videogames_rows, videogames_columns=videogames_columns)
 
 
-@flask_app_instance.route('/low_products')
-def low_products_view_func():
+@flask_app_instance.route('/pending_purchases')
+def pending_purchases_view_func():
 	createIfNotExists()
 	insertDefaultProducts()
 
-	return render_template('admin/low_products.html', title='Products Low on Quantity')
+	return render_template('admin/pending_purchases.html', title='Pending Purchases')
 
 @flask_app_instance.route('/sales_analysis')
 def sales_analysis_view_func():
