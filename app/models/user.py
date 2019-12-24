@@ -14,7 +14,7 @@ def load_user(user_id):
 
 	
 class User(UserMixin):
-	def insert(username, email, password):
+	def insert(username, email, password, total_spent):
 		conn = mysql_instance.connect()
 		cursor = conn.cursor()
 		cursor.execute(f"""
@@ -27,23 +27,28 @@ class User(UserMixin):
 		if(res is not None):
 			raise(Exception('User already exists.'))
 		cursor.execute(f"""
-			INSERT INTO USERS(username, email, password_hash)
-			VALUES ('{username}', '{email}', '{generate_password_hash(password)}');
+			INSERT INTO USERS(username, email, password_hash, total_spent)
+			VALUES ('{username}', '{email}', '{generate_password_hash(password)}', {total_spent});
 			""")
 		conn.commit()
 
-
-	def printUsers():
+	def getAll():
 		conn = mysql_instance.connect()
 		cursor = conn.cursor()
 		cursor.execute("""
-			SELECT * 
-			FROM USERS 
-			;
+			SELECT username, email, total_spent FROM USERS;
 			""")
 		res = cursor.fetchall()
-		for i in res:
-			print(i)
+		return res
+
+	def delete(username):
+		conn = mysql_instance.connect()
+		cursor = conn.cursor()
+		cursor.execute(f"""
+			DELETE FROM USERS
+			WHERE username = '{username}'
+			""")
+		conn.commit()
 
 	def create():
 		conn = mysql_instance.connect()
@@ -52,7 +57,8 @@ class User(UserMixin):
 			CREATE TABLE IF NOT EXISTS USERS(
 				username varchar(50) NOT NULL PRIMARY KEY,
 				email varchar(50) NOT NULL,
-				password_hash varchar(128) NOT NULL 
+				password_hash varchar(128) NOT NULL,
+				total_spent int NOT NULL
 			);
 			""")
 
@@ -65,8 +71,8 @@ class User(UserMixin):
 		userTuple = cursor.fetchone()
 		if(userTuple is None):
 			return None
-		username, email, password_hash = userTuple
-		return User(username, email, password_hash)
+		username, email, password_hash, total_spent = userTuple
+		return User(username, email, password_hash, total_spent)
 
 	def getByEmail(email):
 		conn = mysql_instance.connect()
@@ -77,13 +83,14 @@ class User(UserMixin):
 		userTuple = cursor.fetchone()
 		if(userTuple is None):
 			return None
-		username, email, password_hash = userTuple
-		return User(username, email, password_hash)
+		username, email, password_hash, total_spent = userTuple
+		return User(username, email, password_hash, total_spent)
 
-	def __init__(self, username, email, password_hash):
+	def __init__(self, username, email, password_hash, total_spent):
 		self.username = username
 		self.email = email
 		self.password_hash = password_hash
+		self.total_spent = total_spent
 
 	def get_id(self):
 		return self.username

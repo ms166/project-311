@@ -83,7 +83,13 @@ def users_info_view_func():
 	createIfNotExists()
 	insertDefaultProducts()
 
-	return render_template('admin/users_info.html', title='User Information')
+	user_to_delete = request.args.get('username')
+	if(user_to_delete is not None):
+		User.delete(user_to_delete)
+
+	user_rows = User.getAll()
+	user_columns = ['Username', 'Email', 'Total Spent']
+	return render_template('admin/users_info.html', title='User Information', user_rows = user_rows, user_columns= user_columns)
 
 
 
@@ -284,7 +290,7 @@ def user_register_view_func():
 		return redirect(url_for('all_products_view_func'))
 	form = RegistrationForm()
 	if(form.validate_on_submit()):
-		User.insert(form.username.data, form.email.data, form.password.data)
+		User.insert(form.username.data, form.email.data, form.password.data, 0)
 		flash('You have been registered.')
 		return redirect(url_for('user_sign_in_view_func'))
 	return render_template('users/user_register.html', title='User Register', form=form)

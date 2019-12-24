@@ -1,1 +1,30 @@
 {% extends 'admin/admin_base.html' %}
+{% block head_1 %}
+	<link rel="stylesheet" href="{{ url_for('static', filename='css/list_of_prods.css') }}"  />
+{% endblock %}
+
+{% block content_1 %}
+	<table style="width:100%">
+		<caption>Users</caption>
+		{% for column in user_columns %}
+			<th>
+				{{ column }}
+			</th>
+		{% endfor %}
+		{% for row in user_rows %}
+			<tr>
+				{% for item in row %}
+				<td>
+					{{ item }}	
+				</td>
+				{% endfor %}
+				<td>
+					<form action="" target="_self">
+						<input type="hidden" name="username" value="{{ row[0] }}">
+						<input type="submit" value="Delete User" >	
+					</form>
+				</td>
+			</tr><br>
+		{% endfor %}
+	</table>
+{% endblock %}
