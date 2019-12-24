@@ -21,6 +21,7 @@
 					{% endfor %}
 					<td>
 						<form action="" target="_self" method="post">
+							<input type="hidden" name="user" value="{{ user[0] }}">
 							<input type="hidden" name="item_name" value="{{ row[0] }}">
 							<input type="hidden" name="category" value="{{ row[1] }}">
 							<input type="hidden" name="unit_price" value="{{ row[3] }}">

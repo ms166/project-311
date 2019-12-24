@@ -50,6 +50,21 @@ class User(UserMixin):
 			""")
 		conn.commit()
 
+	def updateSpent(user, total_spent):
+		conn = mysql_instance.connect()
+		cursor = conn.cursor()
+		print(f"""
+			UPDATE USERS
+			SET total_spent=total_spent+{total_spent}
+			WHERE username = '{user}';
+			""")
+		cursor.execute(f"""
+			UPDATE USERS
+			SET total_spent=total_spent+{total_spent}
+			WHERE username = '{user}';
+			""")
+		conn.commit()
+
 	def create():
 		conn = mysql_instance.connect()
 		cursor = conn.cursor()

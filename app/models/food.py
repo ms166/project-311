@@ -32,7 +32,11 @@ class Food:
 			SELECT quantity FROM FOOD WHERE name = '{item_name}';
 			""")
 		ret = cursor.fetchone()
-		return ret[0]
+		if(ret is None):
+			ret = 0
+		else:
+			ret = ret[0]
+		return ret
 
 	def updateQuantity(item_name, quantity):
 		conn = mysql_instance.connect()

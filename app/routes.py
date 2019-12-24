@@ -53,7 +53,7 @@ def admin_products_view_func():
 	if(request_type == 'update'):
 		item_name = request.form.get('item_name')
 		category = request.form.get('category')
-		quantity = request.form.get('quantity')
+		quantity = int(request.form.get('quantity'))
 		if(category.lower() == 'food'):
 			Food.updateQuantity(item_name, quantity)
 		elif(category.lower() == 'clothes'):
@@ -68,30 +68,30 @@ def admin_products_view_func():
 		category = request.form.get('category')
 		if(category.lower() == 'food'):
 			item_name = request.form.get('name')
-			quantity = request.form.get('quantity')
-			price = request.form.get('price')
-			weight = request.form.get('weight')
+			quantity = int(request.form.get('quantity'))
+			price = int(request.form.get('price'))
+			weight = int(request.form.get('weight'))
 			expiry = request.form.get('expiry')
 			Food.insertNew(item_name, quantity, price, weight, expiry)
 		elif(category.lower() == 'electronics'):
 			item_name = request.form.get('name')
-			quantity = request.form.get('quantity')
-			price = request.form.get('price')
+			quantity = int(request.form.get('quantity'))
+			price = int(request.form.get('price'))
 			manufacturer = request.form.get('manufacturer')
 			warranty = request.form.get('warranty')
 			Electronics.insertNew(item_name, quantity, price, manufacturer, warranty)
 		elif(category.lower() == 'clothes'):
 			item_name = request.form.get('name')
-			quantity = request.form.get('quantity')
-			price = request.form.get('price')
+			quantity = int(request.form.get('quantity'))
+			price = int(request.form.get('price'))
 			material = request.form.get('material')
-			size = request.form.get('size')
+			size = int(request.form.get('size'))
 			Clothes.insertNew(item_name, quantity, price, material, size)
 		else:
 			assert category.lower() == 'videogames'
 			item_name = request.form.get('name')
-			quantity = request.form.get('quantity')
-			price = request.form.get('price')
+			quantity = int(request.form.get('quantity'))
+			price = int(request.form.get('price'))
 			company = request.form.get('company')
 			release_date = request.form.get('release_date')
 			platform = request.form.get('platform')
@@ -124,8 +124,9 @@ def pending_purchases_view_func():
 	item_name = request.form.get('item_name')
 	if(item_name is not None):
 		category = request.form.get('category')
-		unit_price = request.form.get('unit_price')
+		unit_price = int(request.form.get('unit_price'))
 		quantity = int(request.form.get('quantity'))
+		user = request.form.get('user')
 		if(category.lower() == 'food'):
 			available = Food.getQuantity(item_name)
 			Food.updateQuantity(item_name, -min(available, quantity))
@@ -146,6 +147,7 @@ def pending_purchases_view_func():
 		print(item_name, quantity)
 		Sold.insert(item_name, quantity, category, unit_price)
 		Cart.delete(item_name, quantity)
+		User.updateSpent(user, quantity * unit_price)
 
 
 	distinctUsers = Cart.distinctUsers()
@@ -224,7 +226,7 @@ def all_products_view_func():
 			assert category.lower() == 'clothes'
 			price = Clothes.getPrice(item_name)
 
-		quantity = request.args.get('quantity')
+		quantity = int(request.args.get('quantity'))
 		user = current_user.username
 		Cart.insert(item_name, category, quantity, price, user)
 
@@ -238,7 +240,7 @@ def cart_view_func():
 
 	item_to_delete = request.args.get('item_name')
 	if(item_to_delete is not None):
-		quantity = request.args.get('quantity')
+		quantity = int(request.args.get('quantity'))
 		Cart.delete(item_to_delete, quantity)
 
 	cart_rows = Cart.getByUser(current_user.username)
@@ -259,8 +261,8 @@ def clothes_view_func():
 	if(item_name is not None):
 		# item_name, category, quantity, price, user
 		category = 'Clothes'
-		quantity = request.args.get('quantity')
-		price = Clothes.getPrice(item_name)
+		quantity = int(request.args.get('quantity'))
+		price = int(Clothes.getPrice(item_name))
 		user = current_user.username
 		Cart.insert(item_name, category, quantity, price, user)
 

@@ -36,7 +36,11 @@ class Videogames:
 			SELECT quantity FROM VIDEOGAMES WHERE name = '{item_name}';
 			""")
 		ret = cursor.fetchone()
-		return ret[0]
+		if(ret is None):
+			ret = 0
+		else:
+			ret = ret[0]
+		return ret
 
 	def insertNew(name, quantity, price, company, release_date, platform):
 		conn = mysql_instance.connect()

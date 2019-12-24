@@ -35,7 +35,11 @@ class Clothes:
 			SELECT quantity FROM CLOTHES WHERE name = '{item_name}';
 			""")
 		ret = cursor.fetchone()
-		return ret[0]
+		if(ret is None):
+			ret = 0
+		else:
+			ret = ret[0]
+		return ret
 
 	def insertNew(name, quantity, price, material, size):
 		conn = mysql_instance.connect()
