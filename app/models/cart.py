@@ -22,6 +22,26 @@ class Cart:
 			);
 			""")
 
+	def update():
+		conn = mysql_instance.connect()
+		cursor = conn.cursor()
+		cursor.execute("""
+			DELETE FROM CART
+			WHERE item_name NOT IN(SELECT name FROM FOOD)
+			AND item_name NOT IN(SELECT name FROM CLOTHES)
+			AND item_name NOT IN(SELECT name FROM ELECTRONICS)
+			AND item_name NOT IN(SELECT name FROM VIDEOGAMES);
+			""")
+
+	def distinctUsers():
+		conn = mysql_instance.connect()
+		cursor = conn.cursor()
+		cursor.execute("""
+			SELECT DISTINCT user FROM CART;
+			""")
+		res = cursor.fetchall()
+		return res
+
 	def delete(item_name, quantity):
 		conn = mysql_instance.connect()
 		cursor = conn.cursor()
@@ -32,9 +52,9 @@ class Cart:
 			""")
 		cursor.execute(f"""
 			DELETE FROM CART
-			WHERE quantity = 0;
+			WHERE quantity <= 0;
 			""")
-		conn.commit();
+		conn.commit()
 
 
 	def getColumnNames():

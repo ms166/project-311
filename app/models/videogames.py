@@ -28,6 +28,16 @@ class Videogames:
 			ALTER TABLE VIDEOGAMES AUTO_INCREMENT=4001;
 			""")
 
+	def getQuantity(item_name):
+		conn = mysql_instance.connect()
+		cursor = conn.cursor()
+
+		cursor.execute(f"""
+			SELECT quantity FROM VIDEOGAMES WHERE name = '{item_name}';
+			""")
+		ret = cursor.fetchone()
+		return ret[0]
+
 	def insertNew(name, quantity, price, company, release_date, platform):
 		conn = mysql_instance.connect()
 		cursor = conn.cursor()

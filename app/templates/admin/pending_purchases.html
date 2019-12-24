@@ -1,1 +1,35 @@
 {% extends 'admin/admin_base.html' %}
+{% block head_1 %}
+	<link rel="stylesheet" href="{{ url_for('static', filename='css/list_of_prods.css') }}"  />
+{% endblock %}
+
+{% block content_1 %}
+	{% for user in distinctUsers %}
+		<table style="width:100%"> 
+			<caption>Pending Purchases for {{ user[0] }}</caption> 
+			{% for column in columns %}
+				<th>
+					{{ column }}
+				</th>
+			{% endfor %}
+			{% for row in pending[user] %}
+				<tr>
+					{% for item in row %}
+					<td>
+						{{ item }}	
+					</td>
+					{% endfor %}
+					<td>
+						<form action="" target="_self" method="post">
+							<input type="hidden" name="item_name" value="{{ row[0] }}">
+							<input type="hidden" name="category" value="{{ row[1] }}">
+							<input type="hidden" name="unit_price" value="{{ row[3] }}">
+							<input type="number" name="quantity" value="1" min="1" max="{{ row[2] }}" >
+							<input type="submit" value="Approve" >	
+						</form>
+					</td>
+				</tr><br>
+			{% endfor %}
+		</table>
+	{% endfor %}
+{% endblock %}

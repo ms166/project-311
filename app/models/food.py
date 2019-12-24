@@ -24,6 +24,15 @@ class Food:
 		cursor.execute("""
 			ALTER TABLE FOOD AUTO_INCREMENT=1001;
 			""")
+	def getQuantity(item_name):
+		conn = mysql_instance.connect()
+		cursor = conn.cursor()
+
+		cursor.execute(f"""
+			SELECT quantity FROM FOOD WHERE name = '{item_name}';
+			""")
+		ret = cursor.fetchone()
+		return ret[0]
 
 	def updateQuantity(item_name, quantity):
 		conn = mysql_instance.connect()

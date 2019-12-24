@@ -1,1 +1,83 @@
 {% extends 'admin/admin_base.html' %}
+{% block head_1 %}
+	<link rel="stylesheet" href="{{ url_for('static', filename='css/list_of_prods.css') }}"  />
+{% endblock %}
+
+{% block content_1 %}
+	{% if food_sold %}
+		<table style="width:100%"> 
+			<caption>Food Sold</caption> 
+			{% for column in columns %}
+				<th>
+					{{ column }}
+				</th>
+			{% endfor %}
+			{% for row in food_sold %}
+				<tr>
+					{% for item in row %}
+					<td>
+						{{ item }}	
+					</td>
+					{% endfor %}
+				</tr><br>
+			{% endfor %}
+		</table>
+	{% endif %}
+	{% if clothes_sold %}
+		<table style="width:100%"> 
+			<caption>Clothes Sold</caption> 
+			{% for column in columns %}
+				<th>
+					{{ column }}
+				</th>
+			{% endfor %}
+			{% for row in clothes_sold %}
+				<tr>
+					{% for item in row %}
+					<td>
+						{{ item }}	
+					</td>
+					{% endfor %}
+				</tr><br>
+			{% endfor %}
+		</table>
+	{% endif %}
+	{% if electronics_sold %}
+		<table style="width:100%"> 
+			<caption>Electronics Sold</caption> 
+			{% for column in columns %}
+				<th>
+					{{ column }}
+				</th>
+			{% endfor %}
+			{% for row in electronics_sold %}
+				<tr>
+					{% for item in row %}
+					<td>
+						{{ item }}	
+					</td>
+					{% endfor %}
+				</tr><br>
+			{% endfor %}
+		</table>
+	{% endif %}
+	{% if videogames_sold %}
+		<table style="width:100%"> 
+			<caption>Videogames Sold</caption> 
+			{% for column in columns %}
+				<th>
+					{{ column }}
+				</th>
+			{% endfor %}
+			{% for row in videogames_sold %}
+				<tr>
+					{% for item in row %}
+					<td>
+						{{ item }}	
+					</td>
+					{% endfor %}
+				</tr><br>
+			{% endfor %}
+		</table>
+	{% endif %}
+{% endblock %}
