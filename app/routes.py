@@ -180,6 +180,7 @@ def users_info_view_func():
 	user_to_delete = request.args.get('username')
 	if(user_to_delete is not None):
 		User.delete(user_to_delete)
+		Cart.deleteByUser(user_to_delete)
 
 	user_rows = User.getAll()
 	user_columns = ['Username', 'Email', 'Total Spent']

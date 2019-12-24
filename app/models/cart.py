@@ -32,6 +32,11 @@ class Cart:
 			AND item_name NOT IN(SELECT name FROM ELECTRONICS)
 			AND item_name NOT IN(SELECT name FROM VIDEOGAMES);
 			""")
+		cursor.execute("""
+			DELETE FROM CART
+			WHERE user NOT IN(SELECT username FROM USERS);
+			""")
+		conn.commit()
 
 	def distinctUsers():
 		conn = mysql_instance.connect()
@@ -41,6 +46,15 @@ class Cart:
 			""")
 		res = cursor.fetchall()
 		return res
+
+	def deleteByUser(username):
+		conn = mysql_instance.connect()
+		cursor = conn.cursor()
+		cursor.execute(f"""
+			DELETE FROM CART
+			WHERE user='{username}';
+			""")
+		conn.commit()
 
 	def delete(item_name, quantity):
 		conn = mysql_instance.connect()
