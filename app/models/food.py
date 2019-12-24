@@ -3,7 +3,7 @@ from app import flask_app_instance, login_manager
 from flask_login import UserMixin
 from werkzeug.security import generate_password_hash, check_password_hash
 import json
-from .ComputePriceRange import computePriceRange
+from .functions import computePriceRange
 
 mysql_instance = MySQL(flask_app_instance)
 
@@ -72,6 +72,27 @@ class Food:
 		for i in res:
 			names.append(i[0])
 		return names
+
+	def insertNew(name, quantity, price, weight, expiry):
+		conn = mysql_instance.connect()
+		cursor = conn.cursor()
+		try:
+			cursor.execute(f"""
+				SELECT * FROM FOOD
+				WHERE name = '{name}';
+				""")
+			res = cursor.fetchone()
+			if(res is not None):
+				print('RES IS NOT NONE')
+				Food.updateQuantity(name, quantity)
+				return
+			cursor.execute(f"""
+				INSERT INTO FOOD(name, quantity, price, weight, expiry)
+				VALUES('{name}', {quantity}, {price}, {weight}, '{expiry}');
+				""")
+			conn.commit()
+		except Exception as e:
+			raise(e)
 
 	def insertDefault():
 		conn = mysql_instance.connect()

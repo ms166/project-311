@@ -45,8 +45,10 @@ def admin_products_view_func():
 	print(f"args response: {request.args.to_dict()}")
 	print(f"form response: {request.form.to_dict()}")
 
-	item_name = request.form.get('item_name')
-	if(item_name is not None):
+	request_type = request.form.get('request_type')
+
+	if(request_type == 'update'):
+		item_name = request.form.get('item_name')
 		category = request.form.get('category')
 		quantity = request.form.get('quantity')
 		if(category == 'Food'):
@@ -55,8 +57,43 @@ def admin_products_view_func():
 			Clothes.updateQuantity(item_name, quantity)
 		elif(category == 'Electronics'):
 			Electronics.updateQuantity(item_name, quantity)
-		elif(category == 'Videogames'):
+		else:
+			assert category == 'Videogames'
 			Videogames.updateQuantity(item_name, quantity)
+
+	if(request_type == 'add_new'):
+		category = request.form.get('category')
+		if(category == 'Food'):
+			item_name = request.form.get('name')
+			quantity = request.form.get('quantity')
+			price = request.form.get('price')
+			weight = request.form.get('weight')
+			expiry = request.form.get('expiry')
+			Food.insertNew(item_name, quantity, price, weight, expiry)
+		elif(category == 'Electronics'):
+			item_name = request.form.get('name')
+			quantity = request.form.get('quantity')
+			price = request.form.get('price')
+			manufacturer = request.form.get('manufacturer')
+			warranty = request.form.get('warranty')
+			Electronics.insertNew(item_name, quantity, price, manufacturer, warranty)
+		elif(category == 'Clothes'):
+			item_name = request.form.get('name')
+			quantity = request.form.get('quantity')
+			price = request.form.get('price')
+			material = request.form.get('material')
+			size = request.form.get('size')
+			Clothes.insertNew(item_name, quantity, price, material, size)
+		else:
+			assert category == 'Videogames'
+			item_name = request.form.get('name')
+			quantity = request.form.get('quantity')
+			price = request.form.get('price')
+			company = request.form.get('company')
+			release_date = request.form.get('release_date')
+			platform = request.form.get('platform')
+			Videogames.insertNew(item_name, quantity, price, company, release_date, platform)
+
 
 	food_rows = Food.getAll()
 	food_columns = Food.getColumnNames()

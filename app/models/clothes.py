@@ -3,7 +3,7 @@ from app import flask_app_instance, login_manager
 from flask_login import UserMixin
 from werkzeug.security import generate_password_hash, check_password_hash
 import json
-from .ComputePriceRange import computePriceRange
+from .functions import computePriceRange
 
 mysql_instance = MySQL(flask_app_instance)
 
@@ -26,6 +26,26 @@ class Clothes:
 		cursor.execute("""
 			ALTER TABLE CLOTHES AUTO_INCREMENT=3001;
 			""")
+
+	def insertNew(name, quantity, price, material, size):
+		conn = mysql_instance.connect()
+		cursor = conn.cursor()
+		try:
+			cursor.execute(f"""
+				SELECT * FROM CLOTHES
+				WHERE name = '{name}';
+				""")
+			res = cursor.fetchone()
+			if(res is not None):
+				Clothes.updateQuantity(name, quantity)
+				return
+			cursor.execute(f"""
+				INSERT INTO CLOTHES(name, quantity, price, material, size)
+				VALUES('{name}', {quantity}, {price}, '{material}', {size});
+				""")
+			conn.commit()
+		except Exception as e:
+			raise(e)
 
 	def updateQuantity(item_name, quantity):
 		conn = mysql_instance.connect()
