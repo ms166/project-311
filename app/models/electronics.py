@@ -26,6 +26,20 @@ class Electronics:
 			ALTER TABLE ELECTRONICS AUTO_INCREMENT=2001;
 			""")
 
+	def updateQuantity(item_name, quantity):
+		conn = mysql_instance.connect()
+		cursor = conn.cursor()
+		cursor.execute(f"""
+			UPDATE ELECTRONICS
+			SET quantity = quantity + {quantity}
+			WHERE name = '{item_name}';
+			""")
+		cursor.execute(f"""
+			DELETE FROM ELECTRONICS
+			WHERE quantity <= 0;
+			""")
+		conn.commit()
+
 	def searchQuery(item_name, price_range):
 		conn = mysql_instance.connect()
 		cursor = conn.cursor()

@@ -19,6 +19,14 @@
 					{{ item }}	
 				</td>
 				{% endfor %}
+				<td>
+					<form action="" target="_self" method="post">
+						<input type="hidden" name="category" value="Food">
+						<input type="hidden" name="item_name" value="{{ row[1] }}">
+						<input type="number" name="quantity" value="1" min="{{ -row[2] }}" max="1000" >
+						<input type="submit" value="Change Quantity" >	
+					</form>
+				</td>
 			</tr><br>
 		{% endfor %}
 	</table>
@@ -36,6 +44,14 @@
 					{{ item }}	
 				</td>
 				{% endfor %}
+				<td>
+					<form action="" target="_self" method="post">
+						<input type="hidden" name="category" value="Electronics">
+						<input type="hidden" name="item_name" value="{{ row[1] }}">
+						<input type="number" name="quantity" value="1" min="{{ -row[2] }}" max="1000" >
+						<input type="submit" value="Change Quantity" >	
+					</form>
+				</td>
 			</tr><br>
 		{% endfor %}
 	</table>
@@ -53,6 +69,14 @@
 					{{ item }}	
 				</td>
 				{% endfor %}
+				<td>
+					<form action="" target="_self" method="post">
+						<input type="hidden" name="category" value="Clothes">
+						<input type="hidden" name="item_name" value="{{ row[1] }}">
+						<input type="number" name="quantity" value="1" min="{{ -row[2] }}" max="1000" >
+						<input type="submit" value="Change Quantity" >	
+					</form>
+				</td>
 			</tr><br>
 		{% endfor %}
 	</table>
@@ -70,6 +94,14 @@
 					{{ item }}	
 				</td>
 				{% endfor %}
+				<td>
+					<form action="" target="_self" method="post">
+						<input type="hidden" name="category" value="Videogames">
+						<input type="hidden" name="item_name" value="{{ row[1] }}">
+						<input type="number" name="quantity" value="1" min="{{ -row[2] }}" max="1000" >
+						<input type="submit" value="Change Quantity" >	
+					</form>
+				</td>
 			</tr><br>
 		{% endfor %}
 	</table>

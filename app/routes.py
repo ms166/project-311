@@ -37,10 +37,26 @@ def insertDefaultProducts():
 # ====================================
 # Admin view functions
 # ====================================
-@flask_app_instance.route('/admin_products')
+@flask_app_instance.route('/admin_products', methods=['GET', 'POST'])
 def admin_products_view_func():
 	createIfNotExists()
-	insertDefaultProducts()
+	# insertDefaultProducts()
+
+	print(f"args response: {request.args.to_dict()}")
+	print(f"form response: {request.form.to_dict()}")
+
+	item_name = request.form.get('item_name')
+	if(item_name is not None):
+		category = request.form.get('category')
+		quantity = request.form.get('quantity')
+		if(category == 'Food'):
+			Food.updateQuantity(item_name, quantity)
+		elif(category == 'Clothes'):
+			Clothes.updateQuantity(item_name, quantity)
+		elif(category == 'Electronics'):
+			Electronics.updateQuantity(item_name, quantity)
+		elif(category == 'Videogames'):
+			Videogames.updateQuantity(item_name, quantity)
 
 	food_rows = Food.getAll()
 	food_columns = Food.getColumnNames()
@@ -140,9 +156,6 @@ def all_products_view_func():
 @login_required
 def cart_view_func():
 	createIfNotExists()
-
-	print(f"args response: {request.args.to_dict()}")
-	print(f"form response: {request.form.to_dict()}")
 
 	item_to_delete = request.args.get('item_name')
 	if(item_to_delete is not None):
@@ -338,10 +351,8 @@ def videogames_view_func():
 	insertDefaultProducts()
 
 
-	# args_response = request.args.to_dict()
-	# form_response = request.form.to_dict()
-	# print(f"args response: {args_response}")
-	# print(f"form response: {form_response}")
+	# print(f"args response: {request.args.to_dict()}")
+	# print(f"form response: {request.form.to_dict()}")
 
 
 	item_name = request.args.get('item_name')
