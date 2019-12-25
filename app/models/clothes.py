@@ -19,7 +19,8 @@ class Clothes:
 				quantity int NOT NULL,
 				price int NOT NULL,
 				material varchar(20) NOT NULL,
-				size int NOT NULL 
+				size int NOT NULL,
+				FOREIGN KEY(name) REFERENCES ALL_PRODUCTS(item_name) ON UPDATE CASCADE ON DELETE CASCADE
 			);
 			""")
 

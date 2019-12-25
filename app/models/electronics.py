@@ -18,7 +18,8 @@ class Electronics:
 				quantity int NOT NULL,
 				price int NOT NULL,
 				manufacturer varchar(20) NOT NULL,
-				warranty boolean 
+				warranty boolean,
+				FOREIGN KEY(name) REFERENCES ALL_PRODUCTS(item_name) ON UPDATE CASCADE ON DELETE CASCADE
 			);
 			""")
 

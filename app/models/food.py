@@ -18,7 +18,8 @@ class Food:
 				quantity int NOT NULL,
 				price int NOT NULL,
 				weight int NOT NULL,
-				expiry DATE NOT NULL
+				expiry DATE NOT NULL,
+				FOREIGN KEY(name) REFERENCES ALL_PRODUCTS(item_name) ON UPDATE CASCADE ON DELETE CASCADE
 			);
 			""")
 		cursor.execute("""

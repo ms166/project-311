@@ -18,7 +18,9 @@ class Cart:
 				quantity int NOT NULL, 
 				price int NOT NULL, 
 				user varchar(50) NOT NULL,
-				PRIMARY KEY(item_name, user)
+				PRIMARY KEY(item_name, user),
+				FOREIGN KEY(user) REFERENCES USERS(username) ON UPDATE CASCADE ON DELETE CASCADE,
+				FOREIGN KEY(item_name) REFERENCES ALL_PRODUCTS(item_name) ON UPDATE CASCADE ON DELETE CASCADE
 			);
 			""")
 

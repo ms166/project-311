@@ -5,3 +5,4 @@ from .food import Food
 from .user import User
 from .videogames import Videogames
 from .sold import Sold
+from .all_products import All_products

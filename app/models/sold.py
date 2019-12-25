@@ -16,7 +16,8 @@ class Sold():
 				item_name varchar(30) NOT NULL PRIMARY KEY,
 				quantity int NOT NULL,
 				category varchar(30) NOT NULL,
-				price int NOT NULL
+				price int NOT NULL,
+				FOREIGN KEY(item_name) REFERENCES ALL_PRODUCTS(item_name) ON UPDATE CASCADE ON DELETE CASCADE
 			);
 			""")
 

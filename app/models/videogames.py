@@ -21,7 +21,8 @@ class Videogames:
 				price int NOT NULL,
 				company varchar(20) NOT NULL,
 				release_date DATE NOT NULL,
-				platform varchar(30) NOT NULL
+				platform varchar(30) NOT NULL,
+				FOREIGN KEY(name) REFERENCES ALL_PRODUCTS(item_name) ON UPDATE CASCADE ON DELETE CASCADE
 			);
 			""")
 		cursor.execute("""

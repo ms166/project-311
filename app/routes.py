@@ -1,7 +1,7 @@
 from flask import render_template, flash, redirect, url_for, request
 from app import flask_app_instance
 from flaskext.mysql import MySQL
-from app.models import Food, Electronics, Clothes, Videogames, User, Cart, Sold
+from app.models import Food, Electronics, Clothes, Videogames, User, Cart, Sold, All_products
 from app.forms import LoginForm, RegistrationForm
 from flask_login import current_user, login_user, logout_user, login_required
 from werkzeug.urls import url_parse
@@ -22,15 +22,17 @@ def homepage_view_func():
 # ====================================
 
 def createIfNotExists():
+	All_products.create()
 	Food.create()
 	Electronics.create()
 	Clothes.create()
 	Videogames.create()
-	Cart.create()
 	User.create()
+	Cart.create()
 	Sold.create()
 
 def insertDefaultProducts():
+	All_products.insertDefault()
 	Food.insertDefault()
 	Electronics.insertDefault()
 	Clothes.insertDefault()
@@ -44,6 +46,7 @@ def insertDefaultProducts():
 def admin_products_view_func():
 	createIfNotExists()
 	# insertDefaultProducts()
+
 
 	print(f"args response: {request.args.to_dict()}")
 	print(f"form response: {request.form.to_dict()}")
@@ -238,6 +241,9 @@ def all_products_view_func():
 def cart_view_func():
 	createIfNotExists()
 
+	print(f"args response: {request.args.to_dict()}")
+	print(f"form response: {request.form.to_dict()}")
+
 	item_to_delete = request.args.get('item_name')
 	if(item_to_delete is not None):
 		quantity = int(request.args.get('quantity'))
@@ -315,10 +321,8 @@ def search_view_func():
 	createIfNotExists()
 	# insertDefaultProducts()
 
-	# args_response = request.args.to_dict()
-	# form_response = request.form.to_dict()
-	# print(f"args response: {args_response}")
-	# print(f"form response: {form_response}")
+	print(f"args response: {request.args.to_dict()}")
+	print(f"form response: {request.form.to_dict()}")
 
 	item_name = request.args.get('item_name')
 	quantity = request.args.get('quantity')
@@ -432,8 +436,8 @@ def videogames_view_func():
 	# insertDefaultProducts()
 
 
-	# print(f"args response: {request.args.to_dict()}")
-	# print(f"form response: {request.form.to_dict()}")
+	print(f"args response: {request.args.to_dict()}")
+	print(f"form response: {request.form.to_dict()}")
 
 
 	item_name = request.args.get('item_name')
