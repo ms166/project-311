@@ -1,9 +1,9 @@
 A grocery store / online shopping flask-web-application.
 
-# Technologies
+## Technologies
 * Flask
 * MySQL
-# Usage
+## Usage
 * `cd grocery-store-flask-app`
 * Install dependencies: `cat requirements.txt | xargs -n 1 pip install`
 * `export FLASK_APP=flaskapp.py`
