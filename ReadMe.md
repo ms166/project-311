@@ -1,5 +1,4 @@
-A grocery store / online shopping flask-web-application.
-
+A grocery store inventory system based on Flask.
 ## Technologies
 * Flask
 * MySQL
